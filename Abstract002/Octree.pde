@@ -1,6 +1,6 @@
 class Octree {
   //lookup tables for splitting octrees
-  // thmySize could be converted to 8 bit binary and do bitwmySizee math to optimize
+  //could be converted to 8 bit binary and use bitwise math to optimize
   private final boolean[] bx = {
     false, true, false, true, false, true, false, true
   };
@@ -13,11 +13,11 @@ class Octree {
   boolean hasChildren;
   Octree[] children;
   Type t = Type.NULL;
-  color c;    //color of thmySize node if we draw it
+  color c;    //color of the node if we draw it
   PVector p;  //world position of octree node
   float s;    //size of octree node
 
-  int maxLevel = 4; //how deep can we go?
+  int maxLevel = 3; //how deep can we go?
   int myLevel; //keep track of how many levels deep into the octree
 
   Octree(float mySize, PVector myPosition, boolean havechildren, int level, color parentColor) {
@@ -32,7 +32,7 @@ class Octree {
       for (int i=0; i<8; i++) {      //for each 8 children in the octree
         //first create a few temporary variables
         float childScale = half_s;
-        boolean hasChildren = myLevel < maxLevel && random(1) < .45;
+        boolean hasChildren = myLevel < maxLevel && random(1) < .49;
         PVector childPosition = new PVector(
           p.x+(bx[i]?half_s:0), 
           p.y+(by[i]?half_s:0), 
@@ -73,16 +73,18 @@ class Octree {
       //vertex(centerx, centery-size); 
       //endShape();
 
-      strokeWeight(map(maxLevel+1-myLevel, 1, maxLevel, 2, 10));
-      if (myLevel > 3) {
-        noStroke();
-        fill(c);
-      } else {
-        noFill();
-        stroke(c);
-      }
-      float ns = s*0.9;
-      ns*=noise((millis()+PVector.dist(new PVector(0,0,0), p))*0.0015);
+      //if (myLevel > 3) {
+      //  noStroke();
+      //  fill(c);
+      //} else {
+      //  noFill();
+      //  strokeWeight(map(maxLevel+1-myLevel, 1, maxLevel, 2, 8));
+      //  stroke(c);
+      //}
+      stroke(255);
+      fill(0);
+      float ns = s;
+      ns*=noise((millis()+PVector.dist(new PVector(0, 0, 0), p))*0.0015)+0.25;
       switch(t) {
       case A:
         sphere(ns/2);
@@ -102,8 +104,6 @@ class Octree {
       default:
         println("this should never happen");
       }
-
-
       popMatrix();
     }
   }
@@ -122,7 +122,7 @@ PVector fastPVectorFromRGB(color c) {
 }
 
 void tetrahedron(float s) {
-  beginShape();
+  beginShape(TRIANGLES);
   vertex(-s, -s, -s);
   vertex( s, -s, -s);
   vertex(   0, 0, s);

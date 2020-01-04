@@ -4,17 +4,20 @@ class Particle {
   PVector acc = new PVector(0, 0);
   public Particle() {
   }
+  public Particle(PVector p) {
+    pos = p;
+  }
   public void update() {
     vel.add(acc);
     pos.add(vel);
     acc.mult(0);
   }
   public void applyForce(PVector force) {
-    acc.add(force);
+    acc.add(force.mult(0.1));
   }
 
   public void show() {
     stroke(0);
-    point(pos.x, pos.y);
+    ellipse(pos.x, pos.y, 10, 10);
   }
 }
