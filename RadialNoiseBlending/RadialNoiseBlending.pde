@@ -19,13 +19,17 @@ void draw() {
     }
   }
   updatePixels();
+  drawFPS(255);
+}
+
+void drawFPS(int c)
+{  
   noStroke();
   fill(0);
   rect(0, 0, 50, 20);
-  fill(255);
+  fill(c);
   text(frameRate, 0, 15);
 }
-
 //you can use this fastAtan2 as a drop-in replacement for the regular atan2
 //it is faster and just as precise for most applications
 //using fastAtan2 instead of atan2 doubles the fps on my machine
