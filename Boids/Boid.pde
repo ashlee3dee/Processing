@@ -3,16 +3,16 @@ class Boid {
   PVector velocity;
   PVector acceleration;
 
-  int maxForce;
-  int maxSpeed;
+  float maxForce;
+  float maxSpeed;
   int size = 10;
   Boid() {
-    this.position = new PVector(random(width), random(height));
+    this.position = new PVector(random(width), random(height), random(height));
     this.velocity = PVector.random3D();
     this.velocity.setMag(random(2, 4));
     this.acceleration = new PVector();
-    this.maxForce = 1;
-    this.maxSpeed = 4;
+    this.maxForce = 1f;
+    this.maxSpeed = 10f;
   }
 
   void edges() {
@@ -58,7 +58,7 @@ class Boid {
     for (Boid other : boids) {
       float d = dist(this.position.x, this.position.y, this.position.z, other.position.x, other.position.y, other.position.z);
       //println(d);
-      if (other != this && d < separationRadius+(this.size*2)){
+      if (other != this && d < separationRadius+(this.size*2)) {
         PVector diff = PVector.sub(this.position, other.position);
         diff.div(d*d);
         steering.add(diff);
@@ -118,13 +118,17 @@ class Boid {
   void show() {
     //stroke(255);
     //noStroke();
-    fill(255);
-    strokeWeight(1);
-    //strokeWeight(2);
-    //line(this.position.x, this.position.y, this.position.x+(this.velocity.x*size), this.position.y+(this.velocity.y*size));
+    color c = color((xAngle(this.velocity)/PI)*255, (yAngle(this.velocity)/PI)*255, (zAngle(this.velocity)/PI)*255);
+    stroke(c);
+    noFill();
+    strokeWeight(2);
+    line(this.position.x, this.position.y, this.position.z, this.position.x+(this.velocity.x*size), this.position.y+(this.velocity.y*size), this.position.z+(this.velocity.z*size));
     //stroke(atan2(velocity.x, velocity.y)*255);
     //ellipse(this.position.x, this.position.y, size, size);
     pushMatrix();
+    noStroke();
+    fill(c);
+    //strokeWeight(1);
     translate(this.position.x, this.position.y, this.position.z);
     sphere(this.size/2);
     popMatrix();
@@ -147,4 +151,16 @@ class Boid {
     stroke(0, 0, 255);
     ellipse(this.position.x, this.position.y, cohesionRadius, cohesionRadius);
   }
+}
+
+public static float xAngle(PVector vector) {
+  return acos(vector.x / (vector.mag()));
+}
+
+public static float yAngle(PVector vector) {
+  return acos(vector.y / (vector.mag()));
+}
+
+public static float zAngle(PVector vector) {
+  return acos(vector.z / (vector.mag()));
 }
