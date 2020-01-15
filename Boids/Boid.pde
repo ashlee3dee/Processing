@@ -12,7 +12,7 @@ class Boid {
     this.velocity.setMag(random(2, 4));
     this.acceleration = new PVector();
     this.maxForce = 1f;
-    this.maxSpeed = 10f;
+    this.maxSpeed = 4f;
   }
 
   void edges() {
@@ -117,27 +117,22 @@ class Boid {
 
   void show() {
     //stroke(255);
-    //noStroke();
-    color c = color((xAngle(this.velocity)/PI)*255, (yAngle(this.velocity)/PI)*255, (zAngle(this.velocity)/PI)*255);
-    stroke(c);
-    noFill();
-    strokeWeight(2);
-    line(this.position.x, this.position.y, this.position.z, this.position.x+(this.velocity.x*size), this.position.y+(this.velocity.y*size), this.position.z+(this.velocity.z*size));
-    //stroke(atan2(velocity.x, velocity.y)*255);
-    //ellipse(this.position.x, this.position.y, size, size);
-    pushMatrix();
     noStroke();
-    fill(c);
-    //strokeWeight(1);
+    fill((xAngle(this.velocity)/PI)*255, (yAngle(this.velocity)/PI)*255, (zAngle(this.velocity)/PI)*255);
+    pushMatrix();
     translate(this.position.x, this.position.y, this.position.z);
     sphere(this.size/2);
     popMatrix();
   }
 
   void showVisual() {
-    stroke(this.velocity.x*255, this.velocity.y*255, this.velocity.z*255);
+    noFill();
     strokeWeight(2);
-    point(this.position.x, this.position.y);
+    line(this.position.x, this.position.y, this.position.z, this.position.x+(this.velocity.x*size), this.position.y+(this.velocity.y*size), this.position.z+(this.velocity.z*size));
+
+    stroke((xAngle(this.velocity)/PI)*255, (yAngle(this.velocity)/PI)*255, (zAngle(this.velocity)/PI)*255);
+    strokeWeight(size);
+    point(this.position.x, this.position.y, this.position.z);
   }
   void showDebug() {
     noFill();

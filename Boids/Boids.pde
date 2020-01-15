@@ -4,6 +4,8 @@ PeasyCam cam;
 
 Boid[] flock;
 
+boolean mode = true;
+
 float alignmentValue = .5;
 float separationValue = 1;
 float cohesionValue = 1;
@@ -15,18 +17,18 @@ float cohesionRadius = 100f;
 
 void settings()
 {
-  size(600, 600, P3D);
+  size(841, 841, P3D);
   //size(displayWidth, displayHeight, P3D);
 }
 void setup() {
 
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
-  smooth(2);                      //enable highest level of anti-aliasing your system can handle
+  smooth(8);                      //enable highest level of anti-aliasing your system can handle
   ellipseMode(CENTER);
   rectMode(CENTER);
-  sphereDetail(4, 4);
+  sphereDetail(6, 6);
 
-  cam = new PeasyCam(this, width);
+  cam = new PeasyCam(this, width*1.5f);
 
   int n = 512;
   flock = new Boid[n];
@@ -38,42 +40,57 @@ void setup() {
 }
 
 void draw() {
-
+  //cam.rotateX(0.01f);
+  //cam.rotateY(0.01f);
+  //cam.rotateZ(0.02f);
   alignmentValue = 0;
-  separationValue = 0.50;
-  cohesionValue = 0.50;
+  separationValue = 0.5;
+  cohesionValue = 0.5;
 
   //alignmentRadius = abs(sin((TWO_PI/3)+(millis()*0.0001f)))*100f;
   //separationRadius = abs(sin((PI/3)+(millis()*0.0001f)))*50f;
   //cohesionRadius = abs(sin(millis()*0.0001f))*100f;
   float sNoise =noise(millis()*0.0001f, 0);
   float cNoise = noise(0, millis()*0.0001f);
-  separationRadius = sNoise*100f;
-  cohesionRadius = cNoise*100f;
-  background(255);
+  separationRadius = sNoise*75f;
+  cohesionRadius = cNoise*50f;
+  cohesionRadius+=25;
+  if (mode) {
+    background(255);
 
-  noFill();
-  stroke(0);
-  strokeWeight(5);
-  rectMode(CENTER);
-  box(width, height, height);
+    noFill();
+    stroke(0);
+    strokeWeight(5);
+    rectMode(CENTER);
+    box(width, height, height);
+  } 
 
   translate(-width/2, -height/2, -height/2);
   for (Boid boid : flock) {
     boid.edges();
     boid.flock(flock);
     boid.update();
-    //boid.showDebug();
+    if (mode) {
+      boid.showVisual();
+    } else {
+      boid.show();
+    }
   }
-  for (Boid boid : flock) {
-    boid.show();
+  if (mode) {
+    cam.beginHUD();
+    stroke(0);
+    fill(255);
+    strokeWeight(2);
+    rectMode(CORNER);
+    rect(10, 10, sNoise*100, 10);
+    rect(10, 30, cNoise*100, 10);
+    cam.endHUD();
   }
-  cam.beginHUD();
-  stroke(0);
-  fill(255);
-  strokeWeight(2);
-  rectMode(CORNER);
-  rect(10, 10, sNoise*100, 10);
-  rect(10, 30, cNoise*100, 10);
-  cam.endHUD();
+}
+
+void keyPressed() {
+  if (key == ' ') {
+    mode = !mode;
+    background(255);
+  }
 }
