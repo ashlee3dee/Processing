@@ -15,9 +15,11 @@ float cohesionRadius = 100f;
 
 void settings()
 {
-  size(displayWidth, displayHeight, P3D);
+  size(600, 600, P3D);
+  //size(displayWidth, displayHeight, P3D);
 }
 void setup() {
+
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
   smooth(2);                      //enable highest level of anti-aliasing your system can handle
   ellipseMode(CENTER);
