@@ -12,8 +12,8 @@ PImage sprites;
 
 Boid[] flock;
 
-int currentMode = 2;
-boolean POST_FX = true;
+int currentMode = 0;
+boolean POST_FX = false;
 
 float alignmentValue = .5;
 float separationValue = 1;
