@@ -21,8 +21,8 @@ Slider cohesionSlider;
 
 void settings()
 {
-  //size(800, 800, P3D);
-  size(displayWidth, displayHeight, P3D);
+  size(750, 750, P3D);
+  //size(displayWidth, displayHeight, P3D);
 }
 void setup() {
 
