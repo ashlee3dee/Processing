@@ -12,8 +12,8 @@ class Boid {
     this.velocity = PVector.random3D();
     this.velocity.setMag(random(100));
     this.acceleration = new PVector();
-    this.maxForce = 2f;
-    this.maxSpeed = 4f;
+    this.maxForce = 1f;
+    this.maxSpeed = 5f;
     this.size=round(random(1,75));
     this.sprite=new PVector(round(random(0, 8)), round(random(0, 2)));
   }

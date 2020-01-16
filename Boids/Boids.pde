@@ -48,7 +48,7 @@ void setup() {
   cam.setMaximumDistance(width*2);
   //cam.setActive(false);
   float cameraZ=((height/2.0) / tan(PI*60.0/360.0));
-  perspective(PI/3.0, width/height, cameraZ/100.0, cameraZ*100.0);
+  perspective(PI/3.0, width/height, cameraZ/10.0, cameraZ*100.0);
 
 
 
@@ -144,8 +144,11 @@ void draw() {
   blendMode(ADD);
   if (POST_FX)
     postFx.render()
-      .bloom(0.5, 20, 40)
-      .blur(20, 50)
+      .brightPass(0.35f)
+      .bloom(0.2, 20, 100)
+      .noise(0.25f, 0.1f)
+      //.chromaticAberration()
+      .blur(0, 2)
       .compose();
   cam.beginHUD();
   //blendMode(ADD);
