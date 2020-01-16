@@ -29,8 +29,8 @@ Slider cohesionSlider;
 
 void settings()
 {
-  //size(750, 750, P3D);
-  fullScreen(P3D);
+  size(750, 750, P3D);
+  //fullScreen(P3D);
 }
 void setup() {
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
@@ -43,7 +43,7 @@ void setup() {
   sprites = loadImage("star_sprites.png");
   postFx = new PostFX(this);
 
-  cam = new PeasyCam(this, width*1.5);
+  cam = new PeasyCam(this, width);
   cam.setMinimumDistance(width/2);
   cam.setMaximumDistance(width*2);
   //cam.setActive(false);
@@ -69,7 +69,7 @@ void setup() {
     .setColorActive(color(255, 255, 255))
     .setColorBackground(color(0, 0, 0))
     .setColorForeground(color(0, 192, 0))
-    .setValue(60);
+    .setValue(180);
   cohesionSlider = cp5.addSlider("Pull")
     .setPosition(5, 45)
     .setRange(0, 300)
@@ -94,7 +94,7 @@ void setup() {
     .setId(2)
     ;
 
-  int n = round(pow(2,10));
+  int n = round(pow(2, 10));
   println(n);
   flock = new Boid[n];
   for (int i = 0; i < n; i++) {
@@ -102,9 +102,6 @@ void setup() {
   }
 
   background(0);
-}
-public void bang() {
-  println("### bang(). a bang event. setting background to ");
 }
 void draw() {
   //cam.rotateX(0.01f);
@@ -123,11 +120,11 @@ void draw() {
       stroke(0);
       strokeWeight(5);
       rectMode(CENTER);
-      box(width*4, width*4, width*4);
+      box(width*3, width*3, width*3);
     }
   } 
 
-  translate(-width*2, -width*2, -width*2);
+  translate(-width*1.5, -width*1.5, -width*1.5);
   for (Boid boid : flock) {
     boid.edges();
     boid.flock(flock);
@@ -145,11 +142,11 @@ void draw() {
   blendMode(ADD);
   if (POST_FX)
     postFx.render()
-      .brightPass(0.35f)
-      .bloom(0.2, 20, 100)
-      .noise(0.25f, 0.1f)
-      //.chromaticAberration()
-      .blur(0, 2)
+      .brightnessContrast(0.04, 0.17)
+      .noise(0.27, 0.1f)
+      .blur(7, 4.9)
+      .saturationVibrance(1.89,2.66)
+      .bloom(0.13, 53, 3.19)
       .compose();
   cam.beginHUD();
   //blendMode(ADD);

@@ -8,7 +8,7 @@ class Boid {
   int size = 10;
   PVector sprite;
   Boid() {
-    this.position = new PVector(random(width*4), random(width*4), random(width*4));
+    this.position = new PVector(random(width*3), random(width*3), random(width*3));
     this.velocity = PVector.random3D();
     this.velocity.setMag(random(100));
     this.acceleration = new PVector();
@@ -19,20 +19,20 @@ class Boid {
   }
 
   void edges() {
-    if (this.position.x > width*4) {
+    if (this.position.x > width*3) {
       this.position.x = 0;
     } else if (this.position.x < 0) {
-      this.position.x = width*4;
+      this.position.x = width*3;
     }
-    if (this.position.y > width*4) {
+    if (this.position.y > width*3) {
       this.position.y = 0;
     } else if (this.position.y < 0) {
-      this.position.y = width*4;
+      this.position.y = width*3;
     }
-    if (this.position.z > width*4) {
+    if (this.position.z > width*3) {
       this.position.z = 0;
     } else if (this.position.z < 0) {
-      this.position.z = width*4;
+      this.position.z = width*3;
     }
   }
 
