@@ -120,19 +120,16 @@ void draw() {
     boid.edges();
     boid.flock(flock);
     boid.update();
-    switch(currentMode) {
-    case 0:
-      boid.showVisual();
-      break;
-    case 1:
-      boid.showSpheres();
-      break;
-    case 2:
-      boid.showSprite();
-      break;
-    default:
-    }
   }
+  if (currentMode==0)
+    for (Boid boid : flock)
+      boid.showVisual();
+  else if (currentMode==1)
+    for (Boid boid : flock)
+      boid.showSpheres();
+  else if (currentMode==2)
+    for (Boid boid : flock)
+      boid.showSprite();
   blendMode(NORMAL);
   fx.render()
     .bloom(0.5, 20, 40)
