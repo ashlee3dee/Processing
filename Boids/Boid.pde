@@ -8,31 +8,32 @@ class Boid {
   int size = 10;
   PVector sprite;
   Boid() {
-    this.position = new PVector(random(width), random(width), random(width));
+    this.position = new PVector(random(width*2), random(width*2), random(width*2));
     this.velocity = PVector.random3D();
-    this.velocity.setMag(random(5, 10));
+    this.velocity.setMag(random(100));
     this.acceleration = new PVector();
     this.maxForce = 1f;
     this.maxSpeed = 5f;
-    sprite=new PVector(round(random(0, 8)), round(random(0, 1)));
+    this.size=round(random(1,50));
+    this.sprite=new PVector(round(random(0, 8)), round(random(0, 2)));
     //sprite=0;
   }
 
   void edges() {
-    if (this.position.x > width) {
+    if (this.position.x > width*2) {
       this.position.x = 0;
     } else if (this.position.x < 0) {
-      this.position.x = width;
+      this.position.x = width*2;
     }
-    if (this.position.y > width) {
+    if (this.position.y > width*2) {
       this.position.y = 0;
     } else if (this.position.y < 0) {
-      this.position.y = width;
+      this.position.y = width*2;
     }
-    if (this.position.z > width) {
+    if (this.position.z > width*2) {
       this.position.z = 0;
     } else if (this.position.z < 0) {
-      this.position.z = width;
+      this.position.z = width*2;
     }
   }
 
@@ -179,7 +180,7 @@ class Boid {
     float textureWidth = 1f/8f;
     //PImage = image(sprites.get(sprite*32, (sprite+1)*32, 32, 32), 0, 0);
     texture(sprites);
-    //tint(255, 128);
+    tint(255, 192);
     vertex(0, 0, textureWidth*(this.sprite.x), textureWidth*(this.sprite.y));
     vertex(this.size, 0, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y));
     vertex(this.size, this.size, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y+1));
