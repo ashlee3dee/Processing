@@ -3,14 +3,17 @@ import ch.bildspur.postfx.pass.*;
 import ch.bildspur.postfx.*;
 import controlP5.*;
 import peasy.*;
+
 PeasyCam cam;
 ControlP5 cp5;
-PostFX fx;
-PGraphics canvas;
+PostFX postFx;
+
 PImage sprites;
+
 Boid[] flock;
 
 int currentMode = 2;
+boolean POST_FX = true;
 
 float alignmentValue = .5;
 float separationValue = 1;
@@ -38,12 +41,15 @@ void setup() {
   sphereDetail(6, 6);
 
   sprites = loadImage("star_sprites.png");
-  fx = new PostFX(this);
+  postFx = new PostFX(this);
 
   cam = new PeasyCam(this, width*1.5);
   cam.setMinimumDistance(width/2);
   cam.setMaximumDistance(width*2);
   //cam.setActive(false);
+  float cameraZ=((height/2.0) / tan(PI*60.0/360.0));
+  perspective(PI/3.0, width/height, cameraZ/100.0, cameraZ*100.0);
+
 
 
   cp5 = new ControlP5(this);
@@ -77,10 +83,15 @@ void setup() {
     .setSize(20, 20)
     .setId(0)
     ;
-  cp5.addBang("randomize")
+  cp5.addBang("rand")
     .setPosition(30, 70)
     .setSize(20, 20)
-    .setId(0)
+    .setId(1)
+    ;
+  cp5.addBang("fx")
+    .setPosition(55, 70)
+    .setSize(20, 20)
+    .setId(2)
     ;
 
   int n = 1024;
@@ -130,10 +141,12 @@ void draw() {
   else if (currentMode==2)
     for (Boid boid : flock)
       boid.showSprite();
-  blendMode(NORMAL);
-  fx.render()
-    .bloom(0.5, 20, 40)
-    .compose();
+  blendMode(ADD);
+  if (POST_FX)
+    postFx.render()
+      .bloom(0.5, 20, 40)
+      .blur(20, 50)
+      .compose();
   cam.beginHUD();
   //blendMode(ADD);
   //image(canvas, 0, 0);
@@ -151,12 +164,18 @@ void keyPressed() {
   if (key=='r' || key == 'R') {
     randomize();
   }
+  if (key=='b' || key == 'B') {
+    fx();
+  }
 }
 
 void mode() {
   currentMode=(currentMode+1)%3;
   background(255);
   //println(currentMode);
+}
+void fx() {
+  POST_FX=!POST_FX;
 }
 
 void randomize() {
