@@ -39,7 +39,6 @@ void setup() {
 
   sprites = loadImage("star_sprites.png");
   fx = new PostFX(this);
-  canvas = createGraphics(width, height, P3D);
 
   cam = new PeasyCam(this, width*1.5);
   cam.setMinimumDistance(width/2);
@@ -96,7 +95,6 @@ public void bang() {
   println("### bang(). a bang event. setting background to ");
 }
 void draw() {
-  canvas.beginDraw();
   //cam.rotateX(0.01f);
   alignmentValue  =  0.5;
   separationValue =  0.5;
@@ -135,18 +133,13 @@ void draw() {
     default:
     }
   }
-  canvas.endDraw();
-
-  cam.beginHUD();
-  blendMode(BLEND);
-  image(canvas, 0, 0);
-
-  blendMode(SCREEN);
-  fx.render(canvas)
-    //.brightPass(0.5)
-    .blur(20, 50)
+  blendMode(NORMAL);
+  fx.render()
+    .bloom(0.5, 20, 40)
     .compose();
-
+  cam.beginHUD();
+  //blendMode(ADD);
+  //image(canvas, 0, 0);
   blendMode(NORMAL);
   fill(0);
   stroke(0);
