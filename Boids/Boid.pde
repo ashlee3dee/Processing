@@ -14,7 +14,7 @@ class Boid {
     this.acceleration = new PVector();
     this.maxForce = 1f;
     this.maxSpeed = 5f;
-    this.size=round(random(1,75));
+    this.size=round(random(1, 75));
     this.sprite=new PVector(round(random(0, 8)), round(random(0, 2)));
   }
 
@@ -136,16 +136,7 @@ class Boid {
     strokeWeight(size);
     point(this.position.x, this.position.y, this.position.z);
   }
-  void showSprite() {
-    pushMatrix();
-    translate(this.position.x, this.position.y, this.position.z);
-    float[] rot = cam.getRotations();
-    rotateX(rot[0]);
-    rotateY(rot[1]);
-    rotateZ(rot[2]);
-    drawQuad();
-    popMatrix();
-  }
+
   void showDebug() {
     noFill();
     strokeWeight(alignmentValue*2);
@@ -160,6 +151,16 @@ class Boid {
     pushMatrix();
     translate(this.position.x, this.position.y, this.position.z); 
     sphere(cohesionRadius);
+    popMatrix();
+  }  
+  void showSprite() {
+    pushMatrix();
+    translate(this.position.x, this.position.y, this.position.z);
+    float[] rot = cam.getRotations();
+    rotateX(rot[0]);
+    rotateY(rot[1]);
+    rotateZ(rot[2]);
+    drawQuad();
     popMatrix();
   }
   public void drawQuad() {

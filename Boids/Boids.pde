@@ -29,8 +29,8 @@ Slider cohesionSlider;
 
 void settings()
 {
-  size(750, 750, P3D);
-  //size(displayWidth, displayHeight, P3D);
+  //size(750, 750, P3D);
+  fullScreen(P3D);
 }
 void setup() {
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
@@ -48,7 +48,7 @@ void setup() {
   cam.setMaximumDistance(width*2);
   //cam.setActive(false);
   float cameraZ=((height/2.0) / tan(PI*60.0/360.0));
-  perspective(PI/3.0, width/height, cameraZ/10.0, cameraZ*100.0);
+  //perspective(PI/3.0, width/height, cameraZ/10.0, cameraZ*100.0);
 
 
 
@@ -94,7 +94,8 @@ void setup() {
     .setId(2)
     ;
 
-  int n = 1024;
+  int n = round(pow(2,10));
+  println(n);
   flock = new Boid[n];
   for (int i = 0; i < n; i++) {
     flock[i] = new Boid();
