@@ -8,32 +8,31 @@ class Boid {
   int size = 10;
   PVector sprite;
   Boid() {
-    this.position = new PVector(random(width*2), random(width*2), random(width*2));
+    this.position = new PVector(random(width*4), random(width*4), random(width*4));
     this.velocity = PVector.random3D();
     this.velocity.setMag(random(100));
     this.acceleration = new PVector();
-    this.maxForce = 1f;
-    this.maxSpeed = 5f;
-    this.size=round(random(1,50));
+    this.maxForce = 2f;
+    this.maxSpeed = 4f;
+    this.size=round(random(1,75));
     this.sprite=new PVector(round(random(0, 8)), round(random(0, 2)));
-    //sprite=0;
   }
 
   void edges() {
-    if (this.position.x > width*2) {
+    if (this.position.x > width*4) {
       this.position.x = 0;
     } else if (this.position.x < 0) {
-      this.position.x = width*2;
+      this.position.x = width*4;
     }
-    if (this.position.y > width*2) {
+    if (this.position.y > width*4) {
       this.position.y = 0;
     } else if (this.position.y < 0) {
-      this.position.y = width*2;
+      this.position.y = width*4;
     }
-    if (this.position.z > width*2) {
+    if (this.position.z > width*4) {
       this.position.z = 0;
     } else if (this.position.z < 0) {
-      this.position.z = width*2;
+      this.position.z = width*4;
     }
   }
 
@@ -133,7 +132,6 @@ class Boid {
     noFill();
     strokeWeight(2);
     line(this.position.x, this.position.y, this.position.z, this.position.x+(this.velocity.x*size), this.position.y+(this.velocity.y*size), this.position.z+(this.velocity.z*size));
-
     stroke((xAngle(this.velocity)/PI)*255, (yAngle(this.velocity)/PI)*255, (zAngle(this.velocity)/PI)*255);
     strokeWeight(size);
     point(this.position.x, this.position.y, this.position.z);
@@ -145,19 +143,12 @@ class Boid {
     rotateX(rot[0]);
     rotateY(rot[1]);
     rotateZ(rot[2]);
-    //scale(10f);
-    //sphere(size);
     drawQuad();
     popMatrix();
   }
   void showDebug() {
     noFill();
     strokeWeight(alignmentValue*2);
-    //stroke(255, 0, 0);
-    //pushMatrix();
-    //translate(this.position.x, this.position.y, this.position.z); 
-    //sphere(alignmentRadius);
-    //popMatrix();
     strokeWeight(separationValue*2);
     stroke(0, 255, 0);
     pushMatrix();
@@ -178,7 +169,6 @@ class Boid {
     noStroke();
     noFill();
     float textureWidth = 1f/8f;
-    //PImage = image(sprites.get(sprite*32, (sprite+1)*32, 32, 32), 0, 0);
     texture(sprites);
     tint(255, 192);
     vertex(0, 0, textureWidth*(this.sprite.x), textureWidth*(this.sprite.y));
