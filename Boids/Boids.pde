@@ -1,7 +1,12 @@
+import ch.bildspur.postfx.builder.*;
+import ch.bildspur.postfx.pass.*;
+import ch.bildspur.postfx.*;
 import controlP5.*;
 import peasy.*;
 PeasyCam cam;
 ControlP5 cp5;
+PostFX fx;
+PGraphics canvas;
 PImage sprites;
 Boid[] flock;
 
@@ -25,30 +30,25 @@ void settings()
   //size(displayWidth, displayHeight, P3D);
 }
 void setup() {
-
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
   smooth(2);                      //enable highest level of anti-aliasing your system can handle
   ellipseMode(CENTER);
   rectMode(CENTER);
   textureMode(NORMAL);
   sphereDetail(6, 6);
-  cp5 = new ControlP5(this);
+
+  sprites = loadImage("star_sprites.png");
+  fx = new PostFX(this);
+  canvas = createGraphics(width, height, P3D);
+
   cam = new PeasyCam(this, width*1.5);
   cam.setMinimumDistance(width/2);
   cam.setMaximumDistance(width*2);
   //cam.setActive(false);
-  sprites = loadImage("star_sprites.png");
-  //stroke(0);
-  //strokeWeight(2);
-  //rectMode(CORNER);
-  //fill(255);
-  //rect(5, 5, 55, 40);
-  //rect(60, 5, separationRadius, 20);
-  //rect(60, 25, cohesionRadius, 20);
-  //fill(0);
-  //text("P U S H", 11, 21);
-  //text("P U L L", 12, 39);
 
+
+  cp5 = new ControlP5(this);
+  cp5.setAutoDraw(false);
   alignmentSlider = cp5.addSlider("Align")
     .setPosition(5, 5)
     .setRange(0, 300)
@@ -72,8 +72,7 @@ void setup() {
     .setColorActive(color(255, 255, 255))
     .setColorBackground(color(0, 0, 0))
     .setColorForeground(color(0, 0, 192))
-    .setValue(180);
-
+    .setValue(220);
   cp5.addBang("mode")
     .setPosition(5, 70)
     .setSize(20, 20)
@@ -84,7 +83,7 @@ void setup() {
     .setSize(20, 20)
     .setId(0)
     ;
-  cp5.setAutoDraw(false);
+
   int n = 1024;
   flock = new Boid[n];
   for (int i = 0; i < n; i++) {
@@ -97,26 +96,14 @@ public void bang() {
   println("### bang(). a bang event. setting background to ");
 }
 void draw() {
+  canvas.beginDraw();
   //cam.rotateX(0.01f);
-  //cam.setDistance(abs(sin(millis()*0.00005f))*width*2f);  
-  //cam.rotateY(0.001f);
-  //cam.rotateZ(0.02f);
   alignmentValue  =  0.5;
   separationValue =  0.5;
   cohesionValue   =  0.5;
-
-  //alignmentRadius = abs(sin((TWO_PI/3)+(millis()*0.0001f)))*100f;
-  //separationRadius = 75f+((1+sin((PI/2)+(millis()*0.0001f)))*50f);
-  //cohesionRadius = 75f+((1+sin((millis()*0.0001f)))*50f);
   alignmentRadius   =  alignmentSlider.getValue();
   separationRadius  =  separationSlider.getValue();
   cohesionRadius    =  cohesionSlider.getValue();
-  //cohesionValue += 10;
-  //float sNoise =noise(millis()*0.0001f, 0);
-  //float cNoise = noise(0, millis()*0.0001f);
-  //separationRadius = sNoise*75f;
-  //cohesionRadius = cNoise*50f;
-  //cohesionRadius+=25;
   if (currentMode!=1) {
     if (currentMode==2) {
       background(0);
@@ -126,11 +113,11 @@ void draw() {
       stroke(0);
       strokeWeight(5);
       rectMode(CENTER);
-      box(width*2, width*2, width*2);
+      box(width*4, width*4, width*4);
     }
   } 
 
-  translate(-width, -width, -width);
+  translate(-width*2, -width*2, -width*2);
   for (Boid boid : flock) {
     boid.edges();
     boid.flock(flock);
@@ -148,10 +135,18 @@ void draw() {
     default:
     }
   }
-  
-  
-  
+  canvas.endDraw();
+
   cam.beginHUD();
+  blendMode(BLEND);
+  image(canvas, 0, 0);
+
+  blendMode(SCREEN);
+  fx.render(canvas)
+    //.brightPass(0.5)
+    .blur(20, 50)
+    .compose();
+
   blendMode(NORMAL);
   fill(0);
   stroke(0);
