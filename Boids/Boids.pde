@@ -1,9 +1,3 @@
-import com.thomasdiewald.pixelflow.java.DwPixelFlow;
-import com.thomasdiewald.pixelflow.java.imageprocessing.filter.DwFilter;
-import processing.core.PApplet;
-import processing.core.PFont;
-import processing.opengl.PGraphics2D;
-
 import controlP5.*;
 import peasy.*;
 PeasyCam cam;
