@@ -6,13 +6,16 @@ class Boid {
   float maxForce;
   float maxSpeed;
   int size = 10;
+  PVector sprite;
   Boid() {
-    this.position = new PVector(random(width), random(height), random(height));
+    this.position = new PVector(random(width), random(width), random(width));
     this.velocity = PVector.random3D();
-    this.velocity.setMag(random(2, 4));
+    this.velocity.setMag(random(5, 10));
     this.acceleration = new PVector();
     this.maxForce = 1f;
-    this.maxSpeed = 4f;
+    this.maxSpeed = 5f;
+    sprite=new PVector(round(random(0, 8)), round(random(0, 1)));
+    //sprite=0;
   }
 
   void edges() {
@@ -21,15 +24,15 @@ class Boid {
     } else if (this.position.x < 0) {
       this.position.x = width;
     }
-    if (this.position.y > height) {
+    if (this.position.y > width) {
       this.position.y = 0;
     } else if (this.position.y < 0) {
-      this.position.y = height;
+      this.position.y = width;
     }
-    if (this.position.z > height) {
+    if (this.position.z > width) {
       this.position.z = 0;
     } else if (this.position.z < 0) {
-      this.position.z = height;
+      this.position.z = width;
     }
   }
 
@@ -115,12 +118,12 @@ class Boid {
     this.acceleration.mult(0);
   }
 
-  void show() {
+  void showSpheres() {
     //stroke(255);
     noStroke();
-    fill((xAngle(this.velocity)/PI)*255, (yAngle(this.velocity)/PI)*255, (zAngle(this.velocity)/PI)*255);
+    fill(abs(xAngle(this.velocity)/PI)*255, abs(yAngle(this.velocity)/PI)*255, abs(zAngle(this.velocity)/PI)*255);
     pushMatrix();
-    translate(this.position.x, this.position.y, this.position.z);
+    translate(this.position.x, this.position.y, this.position.z); 
     sphere(this.size/2);
     popMatrix();
   }
@@ -134,20 +137,56 @@ class Boid {
     strokeWeight(size);
     point(this.position.x, this.position.y, this.position.z);
   }
+  void showSprite() {
+    pushMatrix();
+    translate(this.position.x, this.position.y, this.position.z);
+    float[] rot = cam.getRotations();
+    rotateX(rot[0]);
+    rotateY(rot[1]);
+    rotateZ(rot[2]);
+    //scale(10f);
+    //sphere(size);
+    drawQuad();
+    popMatrix();
+  }
   void showDebug() {
     noFill();
     strokeWeight(alignmentValue*2);
-    stroke(255, 0, 0);
-    ellipse(this.position.x, this.position.y, alignmentRadius, alignmentRadius);
+    //stroke(255, 0, 0);
+    //pushMatrix();
+    //translate(this.position.x, this.position.y, this.position.z); 
+    //sphere(alignmentRadius);
+    //popMatrix();
     strokeWeight(separationValue*2);
     stroke(0, 255, 0);
-    ellipse(this.position.x, this.position.y, separationRadius, separationRadius);
+    pushMatrix();
+    translate(this.position.x, this.position.y, this.position.z); 
+    sphere(separationRadius);
+    popMatrix();
     strokeWeight(cohesionValue*2);
     stroke(0, 0, 255);
-    ellipse(this.position.x, this.position.y, cohesionRadius, cohesionRadius);
+    pushMatrix();
+    translate(this.position.x, this.position.y, this.position.z); 
+    sphere(cohesionRadius);
+    popMatrix();
+  }
+  public void drawQuad() {
+    hint(DISABLE_DEPTH_MASK);
+    blendMode(ADD);
+    beginShape(QUADS);
+    noStroke();
+    noFill();
+    float textureWidth = 1f/8f;
+    //PImage = image(sprites.get(sprite*32, (sprite+1)*32, 32, 32), 0, 0);
+    texture(sprites);
+    //tint(255, 128);
+    vertex(0, 0, textureWidth*(this.sprite.x), textureWidth*(this.sprite.y));
+    vertex(this.size, 0, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y));
+    vertex(this.size, this.size, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y+1));
+    vertex(0, this.size, textureWidth*(this.sprite.x), textureWidth*(this.sprite.y+1));
+    endShape();
   }
 }
-
 public static float xAngle(PVector vector) {
   return acos(vector.x / (vector.mag()));
 }
