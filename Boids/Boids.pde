@@ -157,6 +157,7 @@ void draw() {
   fill(0);
   stroke(0);
   cp5.draw();
+  drawFPS(255);
   cam.endHUD();
 }
 
@@ -185,4 +186,12 @@ void randomize() {
   alignmentSlider.setValue(random(300));
   separationSlider.setValue(random(300));
   cohesionSlider.setValue(random(300));
+}
+void drawFPS(int textColor)
+{  
+  noStroke();
+  fill(0);
+  rect(0, height-5, 80, 20);
+  fill(textColor);
+  text(frameRate, 0, height-5);
 }
