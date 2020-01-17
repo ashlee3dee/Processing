@@ -1,0 +1,67 @@
+GUI Builder changes incorporated into 
+
+V4.4
+Updated for G4P v4.3.1
+
+Global font face, style and size can be set for display, input and slider fonts separately
+
+Font style selectors for bold and italic have been removed. 
+
+
+V4.3
+Updated for G4P v4.2.0 - Includes new GView and GViewPeasyCam controls
+
+GSketchpad replaced by GView control so is no longer available.
+
+Default mouse pointer changer set to false due to Processing bug 5712
+
+GDropList thumb width property added control added.
+
+
+V4.2.1
+Fixes a bug when a GTextArea width or height exceeds 999 pixels (Ticket 10)
+
+Colour schemes 8-15 can now be selected but requires the user to provide a suitable scheme image file. (Ticket 9)
+
+
+V4.2
+Updated to work with G4P V4.1
+
+
+V4.1
+Fixes a bug that caused the sketch to crash when a large number of controls were added to a GWindow object. GUI created with earlier versions are incompatible with 4.1
+
+
+V4.0
+First version to be compatible with Processing 3
+
+Tool version now appears GUI Builder window title bar.
+
+Tool name changed from "GUI Builder" to "G4P GUI Builder" to reinforce link with G4P
+
+
+V2.6
+Last version to be compatible with Processing 2
+
+Still Fully compatible with G4P v3.5
+
+Recompiled with latest tool template
+
+Default event handler code for GTimer controls invalid - now fixed
+
+
+V2.5
+* GUIs created with earlier versions are not compatible with this version
+* Fully compatible with G4P v3.5
+  
+GPassword control added.
+
+Autohide - can use Ctrl+Shift+F5 to reopen design window.
+
+GUI Builder window closes when the parent editor (PDE) window closes.
+
+GUI Builder will not attempt to open a GUI created with an earlier, incompatible version of this tool. Instead the user is presented with a warning message.
+
+Can now use property grid to LOCK a control in the form view to avoid accidentally moving / resizing it with the mouse.
+
+Code generation does not use methods deprecated in G4P 3.5.

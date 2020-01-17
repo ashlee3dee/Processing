@@ -10,10 +10,10 @@ PostFX postFx;
 
 PImage sprites;
 
-Boid[] flock;
+Boid[] boids;
 
-int currentMode = 0;
-boolean POST_FX = false;
+int currentMode = 2;
+boolean POST_FX = true;
 
 float alignmentValue = .5;
 float separationValue = 1;
@@ -29,7 +29,7 @@ Slider cohesionSlider;
 
 void settings()
 {
-  size(750, 750, P3D);
+  size(800, 800, P3D);
   //fullScreen(P3D);
 }
 void setup() {
@@ -39,18 +39,22 @@ void setup() {
   rectMode(CENTER);
   textureMode(NORMAL);
   sphereDetail(6, 6);
+  background(0);
 
   sprites = loadImage("star_sprites.png");
   postFx = new PostFX(this);
 
   cam = new PeasyCam(this, width);
-  cam.setMinimumDistance(width/2);
-  cam.setMaximumDistance(width*2);
-  //cam.setActive(false);
-  float cameraZ=((height/2.0) / tan(PI*60.0/360.0));
-  //perspective(PI/3.0, width/height, cameraZ/10.0, cameraZ*100.0);
+  cam.setMinimumDistance(width/4);
+  cam.setMaximumDistance(width*4);
+  cam.setActive(false);
+  frustum(-5.8, 5.8, -5.8, 5.8, 10, 5000);
 
-
+  int n = round(pow(2, 10));
+  boids = new Boid[n];
+  for (int i = 0; i < n; i++) {
+    boids[i] = new Boid();
+  }
 
   cp5 = new ControlP5(this);
   cp5.setAutoDraw(false);
@@ -78,12 +82,12 @@ void setup() {
     .setColorBackground(color(0, 0, 0))
     .setColorForeground(color(0, 0, 192))
     .setValue(220);
-  cp5.addBang("mode")
+  cp5.addBang("mod")
     .setPosition(5, 70)
     .setSize(20, 20)
     .setId(0)
     ;
-  cp5.addBang("rand")
+  cp5.addBang("rnd")
     .setPosition(30, 70)
     .setSize(20, 20)
     .setId(1)
@@ -93,18 +97,20 @@ void setup() {
     .setSize(20, 20)
     .setId(2)
     ;
-
-  int n = round(pow(2, 10));
-  println(n);
-  flock = new Boid[n];
-  for (int i = 0; i < n; i++) {
-    flock[i] = new Boid();
-  }
-
-  background(0);
+  cp5.addBang("cam")
+    .setPosition(80, 70)
+    .setSize(20, 20)
+    .setId(3)
+    ;
+  cp5.addBang("rst")
+    .setPosition(105, 70)
+    .setSize(20, 20)
+    .setId(4)
+    ;
 }
 void draw() {
-  //cam.rotateX(0.01f);
+  if (!cam.isActive())
+    cam.rotateY(0.0075f);
   alignmentValue  =  0.5;
   separationValue =  0.5;
   cohesionValue   =  0.5;
@@ -125,62 +131,82 @@ void draw() {
   } 
 
   translate(-width*1.5, -width*1.5, -width*1.5);
-  for (Boid boid : flock) {
+  for (Boid boid : boids) {
     boid.edges();
-    boid.flock(flock);
+    boid.flock(boids);
     boid.update();
   }
   if (currentMode==0)
-    for (Boid boid : flock)
+    for (Boid boid : boids)
       boid.showVisual();
   else if (currentMode==1)
-    for (Boid boid : flock)
+    for (Boid boid : boids)
       boid.showSpheres();
   else if (currentMode==2)
-    for (Boid boid : flock)
+    for (Boid boid : boids)
       boid.showSprite();
-  blendMode(ADD);
-  if (POST_FX)
+  else if (currentMode==3)
+    for (Boid boid : boids)
+      boid.showDebug();
+
+
+  if (POST_FX) {
+    blendMode(ADD);
     postFx.render()
       .brightnessContrast(0.04, 0.17)
       .noise(0.27, 0.1f)
       .blur(7, 4.9)
-      .saturationVibrance(1.89,2.66)
+      .saturationVibrance(0.89, 2.26)
       .bloom(0.13, 53, 3.19)
       .compose();
-  cam.beginHUD();
-  //blendMode(ADD);
-  //image(canvas, 0, 0);
+  }
   blendMode(NORMAL);
   fill(0);
   stroke(0);
+  cam.beginHUD();
   cp5.draw();
   drawFPS(255);
   cam.endHUD();
 }
 
 void keyPressed() {
-  if (key == ' ') {
-    mode();
+  if (key == '1') {
+    mod();
   }
-  if (key=='r' || key == 'R') {
-    randomize();
+  if (key=='2') {
+    rnd();
   }
-  if (key=='b' || key == 'B') {
+  if (key=='3') {
     fx();
+  }
+  if (key == '4') {
+    cam();
+  }
+  if (key == '5') {
+    rst();
   }
 }
 
-void mode() {
-  currentMode=(currentMode+1)%3;
+void mod() {
+  currentMode=(currentMode+1)%4;
   background(255);
   //println(currentMode);
 }
 void fx() {
   POST_FX=!POST_FX;
 }
+void cam() {
+  cam.setActive(!cam.isActive());
+}
 
-void randomize() {
+void rst() {
+  for (Boid b : boids) {
+    b.position = new PVector(random(width*3), random(width*3), random(width*3));
+    b.velocity = PVector.random3D();
+    b.velocity.setMag(random(100));
+  }
+}
+void rnd() {
   alignmentSlider.setValue(random(300));
   separationSlider.setValue(random(300));
   cohesionSlider.setValue(random(300));

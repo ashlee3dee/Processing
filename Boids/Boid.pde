@@ -2,11 +2,13 @@ class Boid {
   PVector position;
   PVector velocity;
   PVector acceleration;
+  PVector sprite;
+
+  int size;
 
   float maxForce;
   float maxSpeed;
-  int size = 10;
-  PVector sprite;
+
   Boid() {
     this.position = new PVector(random(width*3), random(width*3), random(width*3));
     this.velocity = PVector.random3D();
@@ -14,7 +16,7 @@ class Boid {
     this.acceleration = new PVector();
     this.maxForce = 1f;
     this.maxSpeed = 5f;
-    this.size=round(random(1, 75));
+    this.size=round(random(10, 50));
     this.sprite=new PVector(round(random(0, 8)), round(random(0, 2)));
   }
 
@@ -116,10 +118,13 @@ class Boid {
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.maxSpeed);
     this.acceleration.mult(0);
+    //float[] camPos = cam.getPosition();
+    //println(dist(
+    //  this.position.x, this.position.y, this.position.z, 
+    //  camPos[0], camPos[1], camPos[2]));
   }
 
   void showSpheres() {
-    //stroke(255);
     noStroke();
     fill(abs(xAngle(this.velocity)/PI)*255, abs(yAngle(this.velocity)/PI)*255, abs(zAngle(this.velocity)/PI)*255);
     pushMatrix();
@@ -138,19 +143,16 @@ class Boid {
   }
 
   void showDebug() {
-    noFill();
-    strokeWeight(alignmentValue*2);
-    strokeWeight(separationValue*2);
-    stroke(0, 255, 0);
+    float a = map(dist(
+      this.position.x, this.position.y, this.position.z, 
+      0, 0, 0), 
+      width/2f, width*2, 
+      1f, 0f);
+    noStroke();
+    fill(a*255);
     pushMatrix();
     translate(this.position.x, this.position.y, this.position.z); 
-    sphere(separationRadius);
-    popMatrix();
-    strokeWeight(cohesionValue*2);
-    stroke(0, 0, 255);
-    pushMatrix();
-    translate(this.position.x, this.position.y, this.position.z); 
-    sphere(cohesionRadius);
+    sphere(size);
     popMatrix();
   }  
   void showSprite() {
@@ -171,7 +173,12 @@ class Boid {
     noFill();
     float textureWidth = 1f/8f;
     texture(sprites);
-    tint(255, 192);
+    float a = map(dist(
+      this.position.x, this.position.y, this.position.z, 
+      width*1.5, width*1.5, width*1.5), 
+      width/2f, width*2, 
+      1f, 0f);
+    tint(255, 255*(a*a));
     vertex(0, 0, textureWidth*(this.sprite.x), textureWidth*(this.sprite.y));
     vertex(this.size, 0, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y));
     vertex(this.size, this.size, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y+1));
