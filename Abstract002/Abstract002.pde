@@ -1,7 +1,7 @@
 Octree ot;
 float zoom = 0;
 float zoomSpeed = 40;
-boolean sinus = true;
+boolean sinus = false;
 void setup() {
   size(800, 800, P3D);
   frameRate(30);
@@ -17,9 +17,9 @@ void draw() {
   translate(width/2, height/2, zoom);
   //rotateY(map(mouseX, 0, width, -PI, PI));    
   //rotateX(map(mouseY, 0, height, -PI, PI));
-  if (!sinus) {
-    rotateY(sin(millis()*0.001f)*PI/2);    
-    rotateX(sin(millis()*0.001f)*PI/2);
+  if (sinus) {
+    rotateY(millis()*0.001f);    
+    //rotateX(sin(millis()*0.001f)*PI/2);
   } else {  
     rotateY(squine(3, millis()*0.001f)*PI/2);    
     rotateX(squine(8, millis()*0.001f)*PI/2);

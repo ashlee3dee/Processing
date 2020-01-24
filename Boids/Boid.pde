@@ -7,10 +7,10 @@ class Boid {
   int size;
 
   float maxForce;
-  float maxSpeed;
+  private float maxSpeed;
 
   Boid() {
-    this.position = new PVector(random(width*3), random(width*3), random(width*3));
+    this.position = new PVector(random(width*4), random(width*4), random(width*3));
     this.velocity = PVector.random3D();
     this.velocity.setMag(random(100));
     this.acceleration = new PVector();
@@ -21,20 +21,20 @@ class Boid {
   }
 
   void edges() {
-    if (this.position.x > width*3) {
+    if (this.position.x > width*4) {
       this.position.x = 0;
     } else if (this.position.x < 0) {
-      this.position.x = width*3;
+      this.position.x = width*4;
     }
-    if (this.position.y > width*3) {
+    if (this.position.y > width*4) {
       this.position.y = 0;
     } else if (this.position.y < 0) {
-      this.position.y = width*3;
+      this.position.y = width*4;
     }
-    if (this.position.z > width*3) {
+    if (this.position.z > width*4) {
       this.position.z = 0;
     } else if (this.position.z < 0) {
-      this.position.z = width*3;
+      this.position.z = width*4;
     }
   }
 
@@ -114,6 +114,7 @@ class Boid {
   }
 
   void update() {
+
     this.position.add(this.velocity);
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.maxSpeed);
@@ -123,7 +124,12 @@ class Boid {
     //  this.position.x, this.position.y, this.position.z, 
     //  camPos[0], camPos[1], camPos[2]));
   }
-
+  void setMaxSpeed(float newSpeed) {
+    this.maxSpeed = newSpeed;
+  }
+  float getMaxSpeed() {
+    return this.maxSpeed;
+  }
   void showSpheres() {
     noStroke();
     fill(abs(xAngle(this.velocity)/PI)*255, abs(yAngle(this.velocity)/PI)*255, abs(zAngle(this.velocity)/PI)*255);
@@ -175,10 +181,11 @@ class Boid {
     texture(sprites);
     float a = map(dist(
       this.position.x, this.position.y, this.position.z, 
-      width*1.5, width*1.5, width*1.5), 
-      width/2f, width*2, 
-      1f, 0f);
-    tint(255, 255*(a*a));
+      width*2, width*2, width*2), 
+
+      0, width*2, 
+      1f, 0.0);
+    tint(255, 255*(pow(a*3, log(1.5))));
     vertex(0, 0, textureWidth*(this.sprite.x), textureWidth*(this.sprite.y));
     vertex(this.size, 0, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y));
     vertex(this.size, this.size, textureWidth*(this.sprite.x+1), textureWidth*(this.sprite.y+1));
