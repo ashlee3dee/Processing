@@ -204,6 +204,9 @@ void setup() {
             alignmentSlider.shuffle();
             separationSlider.shuffle();
             cohesionSlider.shuffle();
+            alignmentRadius = alignmentSlider.getValue();
+            separationRadius = separationSlider.getValue();
+            cohesionRadius = cohesionSlider.getValue();
             break;
           case 7://effectsButton
             POST_FX=!POST_FX;
@@ -353,5 +356,5 @@ void drawFPS(int textColor)
   text("pos: ", 70, height-9);
   text(p[0], 85, height-9);
   text(p[1], 135, height-9);
-  text(p[2], 155, height-9);
+  text(p[2], 185, height-9);
 }
