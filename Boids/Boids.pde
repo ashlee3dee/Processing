@@ -41,8 +41,8 @@ PeasyCam cam;
 
 void settings()
 {
-  size(800, 800, P3D);
-  //fullScreen(P3D);
+  //size(800, 800, P3D);
+  fullScreen(P3D);
 }
 void setup() {
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
