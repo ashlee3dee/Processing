@@ -1,6 +1,7 @@
 INSTRUCTIONS:
 
 All buttons and bars are interactive! Experiment :)
+Press ESC to exit the app.
 
 OPTIONS:
 	MOD: Cycles through display modes
