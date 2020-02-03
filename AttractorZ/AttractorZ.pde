@@ -3,8 +3,12 @@ float timeScale = 0.0001f;        //global amount to scale millis() for all anim
 
 color c, n;
 float l = 0;
+float sizeScalar = 1;
+float sizeScalarDrag = 0.01;
 boolean isVivid = true;
 boolean doDraw = true;
+boolean killMe = false;
+boolean pinchMode = true;
 void settings()
 {
   size(800, 800, P3D);
@@ -47,6 +51,8 @@ void blob(PVector pos) {
   float tsMult = 0.81;
   //float sizeNoise = noise(100+(currentTime*tsMult));
   //maxSize*=sizeNoise;
+  if (killMe)
+    sizeScalar-=sizeScalarDrag;
   PVector[] points = new PVector[32];
   for (int i=0; i < points.length; i++) {
     float percent = (float)i/points.length;
@@ -61,27 +67,32 @@ void blob(PVector pos) {
     noiseDetail(5, 0.65);
     //newPos.mult(noise((i*(sin(currentTime)*tsMult))+(currentTime))*r);
     newPos.mult(r);
+    if (pinchMode)
+      newPos.mult(sin(currentTime*13));
+    newPos.mult(sizeScalar);
     points[i] = newPos;
   }
-  noFill();
-  strokeWeight(4);
-  color interA = lerpColorHSB(c, n, l);
-  //stroke((noise(5000+(currentTime))*300)-25, 255, 192, 32);
-  stroke(interA);
-  pushMatrix();
-  beginShape();
-  translate(width/2, height/2);
-  pos.sub(0.5, 0.5);
-  translate(pos.x*(width*0.75), pos.y*(height*0.75));
-  //translate((pos.y*(width/2))*cos(pos.x*TWO_PI), (pos.y*(height/2))*sin(pos.x*TWO_PI));
-  curveVertex(points[0].x, points[0].y);
-  for (int i=0; i < points.length; i++) {
-    curveVertex(points[i].x, points[i].y);
+  if (sizeScalar>0) {
+    noFill();
+    strokeWeight(4);
+    color interA = lerpColorHSB(c, n, l);
+    //stroke((noise(5000+(currentTime))*300)-25, 255, 192, 32);
+    stroke(interA);
+    pushMatrix();
+    beginShape();
+    translate(width/2, height/2);
+    pos.sub(0.5, 0.5);
+    translate(pos.x*(width*0.75), pos.y*(height*0.75));
+    //translate((pos.y*(width/2))*cos(pos.x*TWO_PI), (pos.y*(height/2))*sin(pos.x*TWO_PI));
+    curveVertex(points[0].x, points[0].y);
+    for (int i=0; i < points.length; i++) {
+      curveVertex(points[i].x, points[i].y);
+    }
+    curveVertex(points[0].x, points[0].y);
+    curveVertex(points[1].x, points[1].y);
+    endShape();
+    popMatrix();
   }
-  curveVertex(points[0].x, points[0].y);
-  curveVertex(points[1].x, points[1].y);
-  endShape();
-  popMatrix();
 
   //println(l);
   if (l>1.0) {
@@ -91,7 +102,7 @@ void blob(PVector pos) {
 
     l=0;
   }
-  println(l);
+  //println(l);
   //ellipse(pos.x, pos.y, sizeNoise*maxSize, sizeNoise*maxSize);
 }
 
@@ -125,6 +136,9 @@ void keyPressed() {
   }
   if (key == 'd' || key == 'D') {
     doDraw=!doDraw;
+  }
+  if (key == 'k' || key == 'K') {
+    killMe=!killMe;
   }
 }
 
