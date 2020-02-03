@@ -35,7 +35,7 @@ void draw() {
       noise(1000+(currentTime*ptsMult)));
     blob(p);
     ui();                       //draw recording UI
-    if (frameCount==1)
+    if (frameCount<5)
       background(0);
   }
 }
