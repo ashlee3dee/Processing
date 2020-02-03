@@ -3,7 +3,7 @@ float timeScale = 0.0001f;        //global amount to scale millis() for all anim
 
 color c, n;
 float l = 0;
-boolean isVivid = false;
+boolean isVivid = true;
 boolean doDraw = true;
 void settings()
 {
@@ -16,29 +16,33 @@ void setup() {
   colorMode(HSB);
   ellipseMode(CENTER);
   rectMode(CENTER);
-  blendMode(ADD);
+  blendMode(NORMAL);
   background(0, 0, 0);
   c = randomColor(isVivid);
   n = randomColor(isVivid);
 }
 
 void draw() {
+
+  float currentTime = (millis()*timeScale);
   //rect(0, 0, 0, 1);
   if (doDraw) {
     l+=0.01;
     noiseDetail(3, 0.65);
-    float ptsMult = 1;
+    float ptsMult = 1.5;
     PVector p = new PVector(
-      noise(millis()*(timeScale*ptsMult)), 
-      noise(10000+(millis()*(timeScale*ptsMult))));
+      noise(currentTime*ptsMult), 
+      noise(1000+(currentTime*ptsMult)));
     blob(p);
     ui();                       //draw recording UI
+    if (frameCount==1)
+      background(0);
   }
 }
 
 void blob(PVector pos) {
 
-  float currentTime = millis()*timeScale;
+  float currentTime = (millis()*timeScale);
   float maxSize = width/6;
   float tsMult = 0.81;
   //float sizeNoise = noise(100+(currentTime*tsMult));
@@ -60,7 +64,7 @@ void blob(PVector pos) {
     points[i] = newPos;
   }
   noFill();
-  strokeWeight(2);
+  strokeWeight(4);
   color interA = lerpColorHSB(c, n, l);
   //stroke((noise(5000+(currentTime))*300)-25, 255, 192, 32);
   stroke(interA);
