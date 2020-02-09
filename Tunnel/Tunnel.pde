@@ -10,6 +10,7 @@ void setup() {
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
   smooth(2);                      //enable highest level of anti-aliasing your system can handle
   ellipseMode(CENTER);
+  colorMode(HSB);
   rectMode(CENTER);
   imageMode(CENTER);
   blendMode(NORMAL);
@@ -17,26 +18,27 @@ void setup() {
 }
 
 void draw() {
-  fill(0,0,0,8);
-  stroke(255);
+  t = get();
+  fill(0, 0, 0, 255);
+  stroke(noise(millis()*timeScale)*255, 255, 255);
   strokeWeight(1);
   pushMatrix();
   translate(width/2, height/2);
 
   rotate(millis()*timeScale*2);
   noiseDetail(4, 0.6);
-  float s = noise(millis()*timeScale*2)*(width);
-  s = width*(1+(noise(millis()*timeScale*2)*0.1));
+  float s = 0;//noise(millis()*timeScale*2)*(width);
+  s = (width*0.75)*(1+(noise(millis()*timeScale*2)*0.1));
   rect(0, 0, s, s);
   popMatrix();
   //background(0, 0, 0);
   //noFill();
-  t = get();
+
   //background(0);
   pushMatrix();
   translate(width/2, height/2);
   rotate((millis()*timeScale*0.1)%PI);
-  scale(0.89+(sin(millis()*timeScale*1)*0.1));
+  scale(0.925+(sin(millis()*timeScale*1)*0.05));
   //background(0);
   image(t, 0, 0);
   popMatrix();

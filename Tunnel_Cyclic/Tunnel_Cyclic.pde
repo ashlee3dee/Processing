@@ -23,11 +23,11 @@ void draw() {
   strokeWeight(4);
   pushMatrix();
   translate(width/2, height/2);
-  //rotate(millis()*timeScale);
+  rotate(-millis()*timeScale*2);
   noiseDetail(4, 0.6);
   //float s =width/2;
-  float s = noise(millis()*timeScale)*(width/2);
-  //s = width*(1+(noise(millis()*timeScale*2)*0.1));
+  float s = noise(millis()*timeScale);
+  s = map(s, 0, 1, width/3, width);
   rect(0, 0, s, s);
   popMatrix();
 

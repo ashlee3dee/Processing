@@ -9,3 +9,6 @@ application.macosx
 *.png
 *.ini
 libraries/
+tools/
+modes/
+examples/

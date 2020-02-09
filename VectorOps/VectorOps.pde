@@ -12,15 +12,36 @@ void setup() {
   smooth(2);                      //enable highest level of anti-aliasing your system can handle
   ellipseMode(CENTER);
   rectMode(CENTER);
-  imageMode(CENTER);
   blendMode(NORMAL);
-  colorMode(HSB);
   background(0, 0, 0);
 }
 
 void draw() {
   tick();  //no touch
+  background(0);
+  translate(width/2, height/2);
 
+  float theta =TWO_PI*0.77;
+  PVector start = new PVector(0, 0);
+  PVector end = new PVector(width/4, height/4);
+  PVector middle = PVector.add(start, end).mult(0.5);
+  PVector tangent = new PVector(end.y - start.y, start.x - end.x);
+  float mag = tangent.mag();
+  //println(tangent.mag()/2f);
+  tangent.normalize();
+  tangent.mult(mag/2);
+  stroke(255*(1f/3f), 255, 255);
+  strokeWeight(2);
+  line(start.x, start.y, end.x, end.y);
+  stroke(255*(2f/3f), 255, 255);
+  strokeWeight(10);
+  point(middle.x, middle.y);
+  line(
+    middle.x - tangent.x, 
+    middle.y - tangent.y, 
+    middle.x + tangent.x, 
+    middle.y + tangent.y
+    );
   tock();  //no touch
 }
 

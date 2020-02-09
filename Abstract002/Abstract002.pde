@@ -21,8 +21,8 @@ void draw() {
     rotateY(millis()*0.001f);    
     //rotateX(sin(millis()*0.001f)*PI/2);
   } else {  
-    rotateY(squine(3, millis()*0.001f)*PI/2);    
-    rotateX(squine(8, millis()*0.001f)*PI/2);
+    rotateY(squine(3, millis()*0.0001f)*PI/2);    
+    rotateX(squine(8, millis()*0.0001f)*PI/2);
   }
 
   translate(-width/4, -width/4, -width/4);

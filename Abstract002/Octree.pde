@@ -32,7 +32,7 @@ class Octree {
       for (int i=0; i<8; i++) {      //for each 8 children in the octree
         //first create a few temporary variables
         float childScale = half_s;
-        boolean hasChildren = myLevel < maxLevel && random(1) < .49;
+        boolean hasChildren = myLevel < maxLevel && random(1) < .75;
         PVector childPosition = new PVector(
           p.x+(bx[i]?half_s:0), 
           p.y+(by[i]?half_s:0), 
@@ -47,7 +47,8 @@ class Octree {
       }
     } else {
       PVector pcol = fastPVectorFromRGB(parentColor);
-      t = Type.values()[(int)random(1, 4)];
+      //t = Type.values()[(int)random(1, 4)];
+      t = Type.E;
       c = color(((pcol.x*2)+random(255))/3, ((pcol.y*2)+random(255))/3, ((pcol.z*2)+random(255))/3);
     }
   }  
@@ -85,6 +86,7 @@ class Octree {
       fill(0);
       float ns = s;
       ns*=noise((millis()+PVector.dist(new PVector(0, 0, 0), p))*0.0015)+0.25;
+      ns=1;
       switch(t) {
       case A:
         sphere(ns/2);
@@ -101,6 +103,9 @@ class Octree {
       case D:
         box(ns);
         break;
+      case E:
+        point(0,0);
+        break;
       default:
         println("this should never happen");
       }
@@ -111,7 +116,7 @@ class Octree {
 
 static enum Type 
 { 
-  NULL, A, B, C, D;
+  NULL, A, B, C, D, E;
 } 
 PVector fastPVectorFromRGB(color c) {
   //int a = (c >> 24) & 0xFF;
