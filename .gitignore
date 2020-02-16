@@ -12,3 +12,5 @@ libraries/
 tools/
 modes/
 examples/
+*.class
+*.json

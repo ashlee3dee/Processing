@@ -6,6 +6,7 @@ class BSPNode {
   int maxDepth;
   int depth = 0;
   float treeSize;
+  int minDepth = 4;
   boolean aspect; //true is tall false is wide
   BSPNode(int md, float ts) {
     treeSize = ts;
@@ -37,7 +38,7 @@ class BSPNode {
         position = new PVector(parent.position.x+(parent.size.x/4f), parent.position.y);
       }
     }
-    if ((random(0f, 1f)>0.25f&depth<maxDepth))
+    if ((depth<minDepth||(random(0f, 1f)>0.25f)&&depth<maxDepth))
       split();
   }
   void split() {
@@ -68,7 +69,7 @@ class BSPNode {
   }
   void visualA() {
     //stroke(0, 0, 255);
-    stroke(map(depth, 0, maxDepth, 128, 255));
+    //stroke(map(depth, 0, maxDepth, 128, 255));
     curveVertex(position.x*treeSize, position.y*treeSize);
     if (hasChildren) {
       for (int i=0; i < children.length; i++) {

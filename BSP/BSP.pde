@@ -24,7 +24,7 @@ void setup() {
   noiseSeed((long)random(2^32));
   for (int ix=0; ix < noderes; ix++) {
     for (int iy=0; iy < noderes; iy++) {
-      BSPNode b = new BSPNode((int)random(3, 6), width/(noderes+1));
+      BSPNode b = new BSPNode((int)random(8), width/(noderes+1));
       bspnodes[noderes * iy + ix] = b;
     }
   }

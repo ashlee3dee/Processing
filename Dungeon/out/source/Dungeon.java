@@ -1,4 +1,112 @@
-import java.lang.reflect.Field;
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.lang.reflect.Field; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class Dungeon extends PApplet {
+
+boolean recording = false;        // A boolean to track whether we are recording are not
+float timeScale = 0.0005f;        //global amount to scale millis() for all animations
+float currentTime = 0;
+String title=getClass().getSimpleName();
+BSPTree dungeon;
+public void settings()
+{
+  size(800, 800, P3D);
+}
+
+public void setup() {
+  frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
+                        //enable highest level of anti-aliasing your system can handle
+  ellipseMode(CENTER);
+  rectMode(CENTER);
+  imageMode(CENTER);
+  blendMode(BLEND);
+  colorMode(HSB);
+  background(0, 0, 0);
+  dungeon = new BSPTree(4, 2, width);
+}
+
+public void draw() {
+  tick();  //no touch
+  background(0);
+  //dungeon.reset();
+  dungeon.draw();
+  tock();  //no touch
+}
+
+/**
+ ================================
+ Mandatory Code
+ ================================
+ **/
+public void keyPressed() {
+  if (key == 'r' || key == 'R') {
+    recording = !recording;
+  }
+  if (key == 'j' || key == 'J') {
+    println("#####################################################################");
+    println("################################RESET################################");
+    println("#####################################################################");
+
+    //dungeon.reset();
+    //dungeon.split();
+    //println(dungeon.info());
+    //dungeon.split();
+    //dungeon.draw();
+    //saveFrame("/output/"+title+"_frame_####.png");
+  }
+}
+public void tick() {
+  currentTime = millis()*timeScale;
+}
+public void tock() {
+  if (recording) {
+    saveFrame("output/frame_####.png");
+  }
+  //ui();
+}
+public void ui() {
+  drawFPS(255);
+}
+public void drawFPS(int textColor)
+{
+  pushMatrix();
+  noStroke();
+  fill(0);
+  rect(0, 0, 100, 40);
+  fill(textColor);
+  text(frameRate, 0, 15);
+  popMatrix();
+}
+
+// linear interpolate two colors in HSB space
+public int lerpColorHSB(int c1, int c2, float amt) {
+  amt = min(max(0.0f, amt), 1.0f);
+  float h1 = hue(c1), s1 = saturation(c1), b1 = brightness(c1);
+  float h2 = hue(c2), s2 = saturation(c2), b2 = brightness(c2);
+  // figure out shortest direction around hue
+  float z = g.colorModeZ;
+  float dh12 = (h1>=h2) ? h1-h2 : z-h2+h1;
+  float dh21 = (h2>=h1) ? h2-h1 : z-h1+h2;
+  float h = (dh21 < dh12) ? h1 + dh21 * amt : h1 - dh12 * amt;
+  if (h < 0.0f) h += z;
+  else if (h > z) h -= z;
+  colorMode(HSB);
+  return color(h, lerp(s1, s2, amt), lerp(b1, b2, amt));
+}
+
 
 class BSPTree extends BSPNode {  
   Root root;
@@ -37,7 +145,7 @@ class BSPTree extends BSPNode {
     popMatrix();
   }
 
-  void reset() {
+  public void reset() {
     //if (    hasChildren) {
     //  children[0].reset();
     //  children[1].reset();
@@ -52,7 +160,7 @@ class BSPTree extends BSPNode {
     //finalSize.mult(2);
     ////split();
   }
-  void reset(int newMaxDepth) {
+  public void reset(int newMaxDepth) {
     //maxDepth = newMaxDepth;
     //reset();
   }
@@ -72,7 +180,7 @@ private class Branch extends BSPNode {
   private Branch() {
     type = NodeType.BRANCH;
   }
-  void split() {
+  public void split() {
     hasChildren=true;
     //children[0] = new BSPNode(this, true);
     //children[1] = new BSPNode(this, false);
@@ -118,7 +226,7 @@ private class Leaf extends BSPNode {
   private Leaf() {
     type = NodeType.LEAF;
   }
-  void draw() {
+  public void draw() {
     pushStyle();
     pushMatrix();
       // //fill(0,0,0,0);
@@ -156,7 +264,7 @@ private class BSPNode {
     depth = 0;
     size = new PVector(1, 1);
     position = new PVector(0, 0);
-    aspect = random(1)>0.5?true:false;
+    aspect = random(1)>0.5f?true:false;
     //println(aspect);
     // split();
     //println(stringMe());
@@ -190,4 +298,13 @@ public String info(Object o) {
   result.append("}");
 
   return result.toString();
+}
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "--present", "--window-color=#666666", "--stop-color=#cccccc", "Dungeon" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
 }

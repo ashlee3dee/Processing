@@ -14,17 +14,17 @@ void setup() {
   ellipseMode(CENTER);
   rectMode(CENTER);
   imageMode(CENTER);
-  blendMode(NORMAL);
+  blendMode(BLEND);
   colorMode(HSB);
   background(0, 0, 0);
-  dungeon = new BSPTree(4, width);
+  dungeon = new BSPTree(4, 2, width);
 }
 
 void draw() {
   tick();  //no touch
   background(0);
   //dungeon.reset();
-  //dungeon.draw();
+  dungeon.draw();
   tock();  //no touch
 }
 
@@ -62,7 +62,7 @@ void tock() {
 void ui() {
   drawFPS(255);
 }
-void drawFPS(int textColor)
+void drawFPS(int textColor) 
 {
   pushMatrix();
   noStroke();
