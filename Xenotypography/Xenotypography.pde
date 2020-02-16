@@ -24,7 +24,7 @@ void setup() {
   noiseSeed((long)random(2^32));
   for (int ix=0; ix < noderes; ix++) {
     for (int iy=0; iy < noderes; iy++) {
-      BSPNode b = new BSPNode((int)random(3, 6), width/(noderes+1));
+      BSPNode b = new BSPNode((int)random(2, 13), (width*0.9/(noderes)));
       bspnodes[noderes * iy + ix] = b;
     }
   }
@@ -32,37 +32,37 @@ void setup() {
 
 void draw() {
   tick();  //no touch
+  PImage p = get();
   if (redraw) {
     background(0, 0, 0);
-    //println(floor(frameCount%frameRate));
+    //println(floor(frameCount%fameRate));
     //bsp.reset();
     //bsp.split();
     for (int ix=0; ix < noderes; ix++) {
       for (int iy=0; iy < noderes; iy++) {
-        pushMatrix();
-        pushStyle();
-        translate((ix+0.5)*(width/noderes), (iy+0.5)*(height/noderes));
-        PVector s = bspnodes[noderes * iy + ix].size;
-        translate(s.x*2, s.y*2);
-        //bspnodes[noderes * iy + ix].draw();
-        popStyle();
-        bspnodes[noderes * iy + ix].visualB();
-        pushStyle();
-        noFill();
-        strokeWeight(2);
-        stroke(255, 255, 255);
-        beginShape();
-        curveVertex(0, 0);
-        bspnodes[noderes * iy + ix].visualA();
-        curveVertex(0, 0);
-        endShape();
-        popStyle();
-
-        popMatrix();
+        //if (random(1)>0.75) {
+          pushMatrix();
+          pushStyle();
+          translate((ix+0.5)*(width/noderes), (iy+0.5)*(height/noderes));
+          PVector s = bspnodes[noderes * iy + ix].size;
+          translate(s.x*2, s.y*2);
+          //bspnodes[noderes * iy + ix].reset();
+          bspnodes[noderes * iy + ix].draw();
+          popStyle();
+          popMatrix();
+        //}
       }
     }
     redraw=false;
   }
+
+  pushMatrix();
+  translate(width/2, height/2);
+  rotate(PI+((TAU/32)*currentTime)%(TAU));
+  scale(0.9);
+  tint(238, 255);
+  //image(p, 0, 0);
+  popMatrix();
   tock();  //no touch
 }
 
@@ -76,7 +76,7 @@ void keyPressed() {
     recording = !recording;
   }
   if (key == 'a' || key == 'A') {
-    saveFrame("output/frame_####.png");
+    //saveFrame("output/frame_####.png");
     for (BSPNode b : bspnodes) {
 
       b.reset();

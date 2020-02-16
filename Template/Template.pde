@@ -1,7 +1,7 @@
 boolean recording = false;        // A boolean to track whether we are recording are not
 float timeScale = 0.0005f;        //global amount to scale millis() for all animations
-
 float currentTime = 0;
+String title=getClass().getSimpleName();
 void settings()
 {
   size(800, 800, P3D);
@@ -39,7 +39,7 @@ void tick() {
 }
 void tock() {
   if (recording) {
-    saveFrame("output/frame_####.png");
+    saveFrame("/output/"+title+"_frame_####.png");
   }
   //ui();
 }

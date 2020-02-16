@@ -1,12 +1,8 @@
 boolean recording = false;        // A boolean to track whether we are recording are not
 float timeScale = 0.0005f;        //global amount to scale millis() for all animations
-boolean redraw = true;
 float currentTime = 0;
-int noderes = 4;
-
-BSPNode[] bspnodes = new BSPNode[noderes*noderes];
-
-
+String title=getClass().getSimpleName();
+BSPTree dungeon;
 void settings()
 {
   size(800, 800, P3D);
@@ -21,48 +17,14 @@ void setup() {
   blendMode(NORMAL);
   colorMode(HSB);
   background(0, 0, 0);
-  noiseSeed((long)random(2^32));
-  for (int ix=0; ix < noderes; ix++) {
-    for (int iy=0; iy < noderes; iy++) {
-      BSPNode b = new BSPNode((int)random(3, 6), width/(noderes+1));
-      bspnodes[noderes * iy + ix] = b;
-    }
-  }
+  dungeon = new BSPTree(4, width);
 }
 
 void draw() {
   tick();  //no touch
-  if (redraw) {
-    background(0, 0, 0);
-    //println(floor(frameCount%frameRate));
-    //bsp.reset();
-    //bsp.split();
-    for (int ix=0; ix < noderes; ix++) {
-      for (int iy=0; iy < noderes; iy++) {
-        pushMatrix();
-        pushStyle();
-        translate((ix+0.5)*(width/noderes), (iy+0.5)*(height/noderes));
-        PVector s = bspnodes[noderes * iy + ix].size;
-        translate(s.x*2, s.y*2);
-        //bspnodes[noderes * iy + ix].draw();
-        popStyle();
-        bspnodes[noderes * iy + ix].visualB();
-        pushStyle();
-        noFill();
-        strokeWeight(2);
-        stroke(255, 255, 255);
-        beginShape();
-        curveVertex(0, 0);
-        bspnodes[noderes * iy + ix].visualA();
-        curveVertex(0, 0);
-        endShape();
-        popStyle();
-
-        popMatrix();
-      }
-    }
-    redraw=false;
-  }
+  background(0);
+  //dungeon.reset();
+  //dungeon.draw();
   tock();  //no touch
 }
 
@@ -75,13 +37,17 @@ void keyPressed() {
   if (key == 'r' || key == 'R') {
     recording = !recording;
   }
-  if (key == 'a' || key == 'A') {
-    saveFrame("output/frame_####.png");
-    for (BSPNode b : bspnodes) {
+  if (key == 'j' || key == 'J') {
+    println("#####################################################################");
+    println("################################RESET################################");
+    println("#####################################################################");
 
-      b.reset();
-      redraw=true;
-    }
+    //dungeon.reset();
+    //dungeon.split();
+    //println(dungeon.info());
+    //dungeon.split();
+    //dungeon.draw();
+    //saveFrame("/output/"+title+"_frame_####.png");
   }
 }
 void tick() {
