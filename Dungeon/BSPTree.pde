@@ -12,11 +12,12 @@ class BSPTree extends BSPNode {
     this.treeScale      =  treeScale;
     this.minSplitDepth  =  minSplitDepth;
     root = new Root();
+    root.split();
   }
   public void draw() {
     pushMatrix();
     pushStyle();
-
+ 
     stroke(255);
     fill(0);
 
@@ -67,10 +68,14 @@ private class Root extends BSPNode {
   private Root() {
     type = NodeType.ROOT;
   }
+  void split(){
+    
+  }
 }
 private class Branch extends BSPNode {
   private Branch() {
     type = NodeType.BRANCH;
+    hasChildren = false;
   }
   void split() {
     hasChildren=true;
@@ -114,8 +119,8 @@ private class Branch extends BSPNode {
   }
 }
 private class Leaf extends BSPNode {
-
   private Leaf() {
+    hasChildren = false;
     type = NodeType.LEAF;
   }
   void draw() {
@@ -152,14 +157,10 @@ private class BSPNode {
   boolean aspect; //true is tall false is wide
   ArrayList<BSPNode> children;
   private BSPNode() {
-    //treeScale = width;
     depth = 0;
     size = new PVector(1, 1);
     position = new PVector(0, 0);
     aspect = random(1)>0.5?true:false;
-    //println(aspect);
-    // split();
-    //println(stringMe());
   }
 }
 public String info(Object o) {

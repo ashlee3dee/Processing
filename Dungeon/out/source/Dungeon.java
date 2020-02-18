@@ -56,9 +56,7 @@ public void keyPressed() {
     recording = !recording;
   }
   if (key == 'j' || key == 'J') {
-    println("#####################################################################");
     println("################################RESET################################");
-    println("#####################################################################");
 
     //dungeon.reset();
     //dungeon.split();
@@ -80,7 +78,7 @@ public void tock() {
 public void ui() {
   drawFPS(255);
 }
-public void drawFPS(int textColor)
+public void drawFPS(int textColor) 
 {
   pushMatrix();
   noStroke();
@@ -120,11 +118,12 @@ class BSPTree extends BSPNode {
     this.treeScale      =  treeScale;
     this.minSplitDepth  =  minSplitDepth;
     root = new Root();
+    root.split();
   }
   public void draw() {
     pushMatrix();
     pushStyle();
-
+ 
     stroke(255);
     fill(0);
 
@@ -175,10 +174,14 @@ private class Root extends BSPNode {
   private Root() {
     type = NodeType.ROOT;
   }
+  public void split(){
+    
+  }
 }
 private class Branch extends BSPNode {
   private Branch() {
     type = NodeType.BRANCH;
+    hasChildren = false;
   }
   public void split() {
     hasChildren=true;
@@ -222,8 +225,8 @@ private class Branch extends BSPNode {
   }
 }
 private class Leaf extends BSPNode {
-
   private Leaf() {
+    hasChildren = false;
     type = NodeType.LEAF;
   }
   public void draw() {
@@ -260,14 +263,10 @@ private class BSPNode {
   boolean aspect; //true is tall false is wide
   ArrayList<BSPNode> children;
   private BSPNode() {
-    //treeScale = width;
     depth = 0;
     size = new PVector(1, 1);
     position = new PVector(0, 0);
     aspect = random(1)>0.5f?true:false;
-    //println(aspect);
-    // split();
-    //println(stringMe());
   }
 }
 public String info(Object o) {
