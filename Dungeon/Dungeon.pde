@@ -1,16 +1,16 @@
-boolean recording = false;        // A boolean to track whether we are recording are not
-float timeScale = 0.0005f;        //global amount to scale millis() for all animations
+boolean recording = false; // A boolean to track whether we are recording are not
+float timeScale = 0.0005f; //global amount to scale millis() for all animations
 float currentTime = 0;
-String title=getClass().getSimpleName();
+String title = getClass().getSimpleName();
 BSPTree dungeon;
-void settings()
-{
+
+void settings() {
   size(800, 800, P3D);
 }
 
 void setup() {
-  frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
-  smooth(2);                      //enable highest level of anti-aliasing your system can handle
+  frameRate(30); //all code should be frame-rate independent. hint: use millis()
+  smooth(2); //enable highest level of anti-aliasing your system can handle
   ellipseMode(CENTER);
   rectMode(CENTER);
   imageMode(CENTER);
@@ -21,25 +21,27 @@ void setup() {
 }
 
 void draw() {
-  tick();  //no touch
+  tick(); //no touch
   background(0);
   //dungeon.reset();
-  dungeon.draw();
-  tock();  //no touch
+  dungeon.display();
+  tock(); //no touch
 }
 
 /**
- ================================
- Mandatory Code
- ================================
- **/
+================================
+Mandatory Code
+================================
+**/
+@Override
 void keyPressed() {
   if (key == 'r' || key == 'R') {
     recording = !recording;
   }
   if (key == 'j' || key == 'J') {
-    println("################################RESET################################");
-
+    println(
+      "################################RESET################################"
+    );
     //dungeon.reset();
     //dungeon.split();
     //println(dungeon.info());
@@ -48,20 +50,23 @@ void keyPressed() {
     //saveFrame("/output/"+title+"_frame_####.png");
   }
 }
+
 void tick() {
-  currentTime = millis()*timeScale;
+  currentTime = millis() * timeScale;
 }
+
 void tock() {
   if (recording) {
     saveFrame("output/frame_####.png");
   }
   //ui();
 }
+
 void ui() {
   drawFPS(255);
 }
-void drawFPS(int textColor) 
-{
+
+void drawFPS(int textColor) {
   pushMatrix();
   noStroke();
   fill(0);
@@ -78,11 +83,12 @@ color lerpColorHSB(color c1, color c2, float amt) {
   float h2 = hue(c2), s2 = saturation(c2), b2 = brightness(c2);
   // figure out shortest direction around hue
   float z = g.colorModeZ;
-  float dh12 = (h1>=h2) ? h1-h2 : z-h2+h1;
-  float dh21 = (h2>=h1) ? h2-h1 : z-h1+h2;
+  float dh12 = (h1 >= h2) ? h1 - h2 : z - h2 + h1;
+  float dh21 = (h2 >= h1) ? h2 - h1 : z - h1 + h2;
   float h = (dh21 < dh12) ? h1 + dh21 * amt : h1 - dh12 * amt;
-  if (h < 0.0) h += z;
-  else if (h > z) h -= z;
+  if (h < 0.0) h += z; else if (h > z) h -= z;
   colorMode(HSB);
   return color(h, lerp(s1, s2, amt), lerp(b1, b2, amt));
 }
+
+class c{public c(){}}
