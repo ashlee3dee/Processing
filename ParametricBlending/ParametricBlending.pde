@@ -4,7 +4,9 @@ void setup() {
   frameRate(30);
   colorMode(HSB);
 }
-
+float squine(float t, float k) {
+  return 1f-(2/(1f+pow(exp(k), (sin(t)))));
+}
 void draw() {
   loadPixels();
   for (int x=0; x<width; x++) {
@@ -28,11 +30,8 @@ void drawFPS(int c)
   rect(0, 0, 50, 20);
   fill(c);
   text(frameRate, 0, 15);
-}
-float squine(float t, float k) {
-  return 1f-(2/(1f+pow(exp(k), (sin(t)))));
-}
 
+}
 void keyPressed() {
 
   // If we press r, start or stop recording!

@@ -23,8 +23,8 @@ void draw() {
   background(0);
 
   g.noiseIterate();
-  //g.display();
-  drawCylinderBetween(new PVector(0, 0, 0), new PVector(10, 10, 10));
+  g.display();
+  //drawCylinderBetween(new PVector(0, 0, 0), new PVector(10, 10, 10));
   if (millis()-lastTime>timeDelay) {
     lastTime=millis();
     //camera.lookAt(random(-5, 5), random(-5, 5), random(-5, 5), 0.1, timeDelay);
@@ -94,7 +94,7 @@ class Grid {
       noStroke();
       fill(255*v);
       PVector p = to3Dvec(i);
-      translate(p.x, p.y*v, p.z);
+      translate(p.x, p.y*(v*v), p.z);
       if (p.y*v>10.5)
       {
         fill(255*v, 0, 0);
@@ -103,15 +103,15 @@ class Grid {
       box(v, v, v);
       popMatrix();
     }
-    PVector lp = nodes.get(nodes.size()-1);
-    for (PVector p : nodes) {
-      pushMatrix();
-      translate(p.x, p.y, p.z);
-      sphere(1);
-      popMatrix();
-      drawCylinderBetween(lp, p);
-      lp = p;
-    }
+    //PVector lp = nodes.get(nodes.size()-1);
+    //for (PVector p : nodes) {
+    //  pushMatrix();
+    //  translate(p.x, p.y, p.z);
+    //  sphere(1);
+    //  popMatrix();
+    //  //drawCylinderBetween(lp, p);
+    //  lp = p;
+    //}
   }
 }
 

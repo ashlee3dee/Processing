@@ -8,6 +8,11 @@ class Particle {
     pos = p;
   }
   public void update() {
+    if (pos.x<0)pos.x=width;
+    else if (pos.x>width)pos.x=0;
+    if (pos.y<0)pos.y=height;
+    else if (pos.y>height)pos.y=0;
+    vel.limit(2);
     vel.add(acc);
     pos.add(vel);
     acc.mult(0);

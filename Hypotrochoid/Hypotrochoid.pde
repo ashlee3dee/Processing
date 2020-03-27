@@ -1,4 +1,4 @@
-GraphObject g = new GraphObject();
+GraphObject g = new GraphObject(1, 1, 1, 10, 10);
 void setup() {
   background(0);
   size(800, 800);

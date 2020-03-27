@@ -28,19 +28,18 @@ void draw() {
   PImage i = get();
   pushMatrix();
   translate(width/2, height/2);
-  scale(0.8);
+  scale(0.9);
   squiggleBox(false);
   squiggleBox(true);
   popMatrix();
   pushMatrix();
-  noiseDetail(6);
-  float sf = map(noise(currentTime/2), 0, 1, 0.92, 0.98);
+  noiseDetail(3);
+  float sf = map(noise(currentTime/2), 0, 1, 0.9, 0.98);
   tint(255, 255);
   translate(width/2, height/2);
   rotate(-currentTime*TWO_PI*0.04);
   image(i, 0, 0, width*sf, height*sf);
   popMatrix();
-  noiseDetail(5);
   noStroke();
   fill(0, 0, 0, 0);
   rect(width/2, height/2, width, height);
@@ -71,11 +70,13 @@ void squiggleBox(boolean mode) {
     end = c[(i+1)%c.length];
 
     for (int v=0; v < r; v++) {
+
+      noiseDetail(6);
       float    pct = (float)v/r;                                     //(0-1)f  across line
       float    str = sin(pct*PI);                                    //blending strength
       PVector  np  =  PVector.lerp(start, end, pct);                 //new position
       PVector  tan = new PVector(end.y - start.y, start.x - end.x);  //tangent vector
-      float    ns  =  noise(currentTime*3)*0.2;                                         //noise space scale
+      float    ns  =  noise(currentTime*3)*0.2;                      //noise space scale
       float    nm  =  width/3;                                       //noise max magnitude
       noiseDetail(4);
       float    no  = map(noise(currentTime*2), 0, 1, 0.2, 2);
