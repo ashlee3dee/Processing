@@ -5,6 +5,7 @@ import template.library.*;
 import peasy.PeasyCam;
 boolean recordObj = false;
 boolean recording = false;        // A boolean to track whether we are recording are not
+boolean colorType = false;
 float timeScale = 0.0005f;        //global amount to scale millis() for all animations
 float currentTime = 0;
 String title=getClass().getSimpleName();
@@ -12,7 +13,7 @@ XML xml;
 XML[] children;
 PeasyCam cam;
 
-String file="Ship0";
+String file="ShipName";
 
 void settings()
 {
@@ -50,16 +51,15 @@ void draw() {
     float lx=block.getFloat("lx");
     float ly=block.getFloat("ly");
     float lz=block.getFloat("lz");
-
     float ux=block.getFloat("ux");
     float uy=block.getFloat("uy");
     float uz=block.getFloat("uz");
 
-
+    //for some reason certain builtin models use a different
+    //naming scheme for their attributes
     //float lx=block.getFloat("lowerX");
     //float ly=block.getFloat("lowerY");
     //float lz=block.getFloat("lowerZ");
-
     //float ux=block.getFloat("upperX");
     //float uy=block.getFloat("upperY");
     //float uz=block.getFloat("upperZ");
@@ -75,12 +75,16 @@ void draw() {
     float scl=10;
     String s = block.getString("color");
     int ci = unhex(s);
-    //color c = color(red(ci), green(ci), blue(ci));
-    color c = color(
-      map(block.getInt("look"), 0, 5, 0, 255), 
-      map(block.getInt("up"), 0, 5, 0, 255), 
-      map(block.getInt("index"),0,100,0,255)
-      );
+    color c = color(0, 0, 0);
+    if (colorType) {
+      c = color(
+        map(block.getInt("look"), 0, 5, 0, 255), 
+        map(block.getInt("up"), 0, 5, 0, 255), 
+        map(block.getInt("index"), 0, 100, 0, 255)
+        );
+    } else {
+      c = color(red(ci), green(ci), blue(ci));
+    }
     pushMatrix();
     strokeWeight(0);
     stroke(255);
@@ -104,6 +108,9 @@ void keyPressed() {
   }
   if (key==' ') {
     recordObj=true;
+  }
+  if (key == 't' || key == 'T') {
+    colorType=!colorType;
   }
 }
 void mousePressed() {
