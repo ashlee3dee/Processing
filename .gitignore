@@ -16,3 +16,5 @@ tools/
 modes/
 examples/
 node_modules/
+*.xml
+*.obj

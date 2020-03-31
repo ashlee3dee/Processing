@@ -1,7 +1,13 @@
 boolean recording = false;        // A boolean to track whether we are recording are not
-float timeScale = 0.0005f;        //global amount to scale millis() for all animations
-float currentTime = 0;
+float timeScale = 1f;        //global amount to scale millis() for all animations
+float currentTime=0f;
 String title=getClass().getSimpleName();
+float lastUpdate = 0f;
+float bpm=125f/60f;
+float updateFrequency = 1000f/bpm;
+float udms = bpm/1000f;
+PVector[] objs = new PVector[16];
+float hs = 0.7;
 void settings()
 {
   size(800, 800, P3D);
@@ -13,57 +19,110 @@ void setup() {
   ellipseMode(CENTER);
   rectMode(CENTER);
   imageMode(CENTER);
-  blendMode(NORMAL);
+  blendMode(LIGHTEST);
   colorMode(HSB);
+  noiseDetail(3, 0.75);
+  float fov = PI/3.0;
+  float cameraZ = (height/2.0) / tan(fov/2.0);
+  perspective(fov, float(width)/float(height), 
+    cameraZ/10.0f, cameraZ*1000.0);
+  for (int i=0; i < objs.length; i++) {
+    objs[i] = new PVector(random(0f, height), random(0f, height));
+  }
   background(0, 0, 0);
 }
 
 void draw() {
+  hs = map(sin(millis()*(udms/4f)), -1f, 1f, 0.20, 0.6);
   tick();  //no touch
   clear();
-  noStroke();
-  noFill();
+  //background(0, 0, 0);
   pushStyle();
   colorMode(RGB);
+  fill(0);
   stroke(255, 255, 255);
   strokeWeight(5);
-  noFill();
   beginShape();
-  for (int i=0; i < 32; i++) {
-    PVector p = new PVector(random(0, height), random(0, height));
-    rect(p.x, p.y, 100, 100);
-    //point(p.x, p.y);
-    //vertex(p.x, p.y);
+  float udpct = (currentTime-lastUpdate)/updateFrequency;
+  if (round(currentTime-lastUpdate)>=updateFrequency*2) {
+    for (int i=0; i < objs.length; i++) {
+      objs[i] = new PVector(random(0f, height), random(0f, height));
+    }
+    lastUpdate=currentTime;
   }
+
+  for (int i=0; i < objs.length; i++) {
+    rect(lerp(height/2, objs[i].x, udpct), 
+      lerp(height/2, objs[i].y, udpct), 
+      (map(sin(millis()*(udms)), -1f, 1f, 0.5f, 1f))*noise(1, currentTime*0.0001f)
+      *height/4f, 
+      (map(sin(millis()*(udms)), -1f, 1f, 0.5f, 1f))*noise(2, currentTime*0.0001f)
+      *height/4f);
+  }  
   endShape(CLOSE);
   popStyle();
+  pushStyle();
+  stroke(255);
+  strokeWeight(10);
+  noFill();
+  beginShape(LINES);
+  for (int i=0; i < objs.length; i++) {
+    vertex(lerp(height/2f, objs[i].x, udpct), objs[i].y);
+  }
+  endShape();
+  popStyle();
   PImage p = get();
-  //background(0);
-  drawStrip(p);
+
+  background(0);
+  translate(width/2f, height/2f);
+  pushMatrix();
+  for (int i=0; i < 128; i++) {
+    pushMatrix();
+    for (int ii=0; ii < 4; ii++) {
+      drawStrip(p);
+      rotateZ(PI/2f);
+    }
+    popMatrix();
+    translate(0, 0, -height*hs);
+    rotateZ((currentTime*(udms/16))*(PI/100));
+  }
+  popMatrix();
+  p=get();
+  background(0);
+  rotate(millis()*(udms/8f)*TWO_PI);
+  image(p, 0, 0);
   tock();  //no touch
 }
 void drawStrip(PImage img) {
-  background(0);
-  translate(width/2, height/2);
-  scale(0.5);
-  //rotateY(map(mouseX, 0, width, -PI, PI));
+  pushMatrix();
+  pushStyle();
+
+  noStroke();
+  translate(0, img.height/2f);
+  rotateX(PI*0.5f);
+
+
   beginShape();
   texture(img);
-  float quadSize = 500;
-  vertex(-quadSize, -quadSize, 0, 0, 0);
-  vertex(quadSize, -quadSize, 0, img.width, 0);
-  vertex(quadSize, quadSize, 0, img.width, img.height);
-  vertex(-quadSize, quadSize, 0, 0, img.height);
+  vertex(-width/2f, -height*hs, 0, 0, 0);
+  vertex(width/2f, -height*hs, 0, img.width, 0);
+  vertex(width/2f, 0, 0, img.width, img.height);
+  vertex(-width/2f, 0, 0, 0, img.height);
   endShape();
-  strokeWeight(20);
-  stroke(0, 255, 255);
-  point(-quadSize, -quadSize, 0);
-  stroke(74, 255, 255);
-  point(quadSize, -quadSize, 0);
-  stroke(163, 255, 255);
-  point(quadSize, quadSize, 0);
-  stroke(204, 255, 255);
-  point(-quadSize, quadSize, 0);
+  popStyle();
+  popMatrix();
+  //pushStyle();
+  //strokeWeight(20);
+  //stroke(0, 255, 255);
+  //point(-img.width, -img.height, 0);
+  //stroke(74, 255, 255);
+  //point(img.width, -img.height, 0);
+  //stroke(163, 255, 255);
+  //point(img.width, img.height, 0);
+  //stroke(204, 255, 255);
+  //point(-img.width, img.height, 0);
+  //popStyle();
+  //popMatrix();
 }
 
 /**
