@@ -1,7 +1,4 @@
 import nervoussystem.obj.*;
-import ComputationalGeometry.*;
-import quickhull3d.*;
-import template.library.*;
 import peasy.PeasyCam;
 boolean recordObj = false;
 boolean recording = false;        // A boolean to track whether we are recording are not
@@ -13,7 +10,7 @@ XML xml;
 XML[] children;
 PeasyCam cam;
 
-String file="ShipName";
+String file="/myship";
 
 void settings()
 {
@@ -35,7 +32,9 @@ void setup() {
   perspective(fov, float(width)/float(height), 
     cameraZ/100.0, cameraZ*10.0);
   cam = new PeasyCam(this, 500);
+  
   xml = loadXML(file+".xml");
+  //sometimes the actual blocks are within a "ship plan" that lies at index 1
   if (xml.getChildCount()==3) {
     children = xml.getChild(1).getChildren("item");
   } else {  
@@ -118,8 +117,9 @@ void mousePressed() {
 }
 void tick() {
   currentTime = millis()*timeScale;
-  directionalLight(241, 242, 245, 4, 4, 2);
-  ambientLight(63, 66, 63);
+  lights();
+  //directionalLight(241, 242, 245, 4, 4, 2);
+  //ambientLight(63, 66, 63);
   if (recordObj) {
     beginRecord("nervoussystem.obj.OBJExport", file+".obj");
   }
