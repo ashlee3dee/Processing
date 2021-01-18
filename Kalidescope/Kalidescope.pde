@@ -26,7 +26,7 @@ void setup() {
   background(0, 0, 0);
   noiseDetail(2, 0.50);
   //global vars
-  movieA = new Movie(this, "01w3rmeD-S2Fzd6_.mp4");
+  movieA = new Movie(this, "movie.mp4");
   //movieB = new Movie(this, inputDirectory+"movieB.mov");
   movieA.loop();
 }
