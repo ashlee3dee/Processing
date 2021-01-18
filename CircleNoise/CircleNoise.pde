@@ -4,7 +4,7 @@ float timeScale = 0.001;
 boolean recording = true;
 
 void setup() {
-  size(480, 480);
+  size(1000, 600);
   frameRate(60);
 }
 void draw() {

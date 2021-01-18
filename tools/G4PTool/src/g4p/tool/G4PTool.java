@@ -19,7 +19,7 @@
  * Boston, MA  02111-1307  USA
  * 
  * @author		Peter Lager http://www.lagers.org.uk
- * @modified	01/02/2020
+ * @modified	02/22/2020
  * @version		##version##
  */
 package g4p.tool;
@@ -65,7 +65,7 @@ public class G4PTool implements Tool, TFileConstants {
 	 * @return revision number string
 	 */
 	public static String getVersion(){
-		return "4.4";
+		return "4.4.1";
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class G4PTool implements Tool, TFileConstants {
 	 * @return revision number string
 	 */
 	public static String getCompatibleVersionNo(){
-		String n[] = "4.4".split("[\\.]");
+		String n[] = "4.4.1".split("[\\.]");
 		return n[0] + "." + n[1];
 	}
 
@@ -86,7 +86,7 @@ public class G4PTool implements Tool, TFileConstants {
 	 * @return version number as int
 	 */
 	public static int getVersionNo(){
-		String n[] = "4.4".split("[\\.]");
+		String n[] = "4.4.1".split("[\\.]");
 		int[] vnp = new int[3];
 		for(int i = 0; i < n.length; i++){
 			try {
@@ -135,7 +135,7 @@ public class G4PTool implements Tool, TFileConstants {
 		if (dframe == null) { // Design window does not exist
 			
 			System.out.println("===================================================");
-			System.out.println("   G4P GUI Builder 4.4 created by Peter Lager");
+			System.out.println("   G4P GUI Builder 4.4.1 created by Peter Lager");
 			System.out.println("===================================================");
 
 			// If the gui.pde tab does not exist create it

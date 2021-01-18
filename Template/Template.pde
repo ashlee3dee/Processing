@@ -1,26 +1,29 @@
 boolean recording = false;        // A boolean to track whether we are recording are not
-float timeScale = 0.0005f;        //global amount to scale millis() for all animations
-float currentTime = 0;
+float globalTimeScale = 0.0005f;        //global amount to scale millis() for all animations
+float simTime = 0;
 String title=getClass().getSimpleName();
+
+
 void settings()
 {
   size(800, 800, P3D);
+  smooth(2);                      //enable highest level of anti-aliasing your system can handle
 }
 
 void setup() {
-  frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
-  smooth(2);                      //enable highest level of anti-aliasing your system can handle
+  frameRate(60);                  //all code should be frame-rate independent. hint: use currentTime (millis()*globalglobalTimeScale)
   ellipseMode(CENTER);
   rectMode(CENTER);
   imageMode(CENTER);
   blendMode(NORMAL);
-  colorMode(HSB);
+  colorMode(HSB, TAU, TAU, TAU);
   background(0, 0, 0);
+  
 }
 
 void draw() {
   tick();  //no touch
-
+  //code here
   tock();  //no touch
 }
 
@@ -35,13 +38,13 @@ void keyPressed() {
   }
 }
 void tick() {
-  currentTime = millis()*timeScale;
+  simTime = millis()*globalTimeScale;
 }
 void tock() {
   if (recording) {
     saveFrame("/output/"+title+"_frame_####.png");
   }
-  //ui();
+  ui();
 }
 void ui() {
   drawFPS(255);

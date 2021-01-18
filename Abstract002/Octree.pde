@@ -64,24 +64,24 @@ class Octree {
       //rotateX(rotation);
       //rotateY(rotation);
       //rotateZ(rotation);
-      //beginShape(TRIANGLE_FAN);
-      //float centerx=0, centery=0, size=s;
-      //vertex(centerx, centery);
-      //vertex(centerx, centery-size); 
-      //vertex(centerx+size, centery); 
-      //vertex(centerx, centery+size); 
-      //vertex(centerx-size, centery); 
-      //vertex(centerx, centery-size); 
-      //endShape();
+      beginShape(TRIANGLE_FAN);
+      float centerx=0, centery=0, size=s;
+      vertex(centerx, centery);
+      vertex(centerx, centery-size); 
+      vertex(centerx+size, centery); 
+      vertex(centerx, centery+size); 
+      vertex(centerx-size, centery); 
+      vertex(centerx, centery-size); 
+      endShape();
 
-      //if (myLevel > 3) {
-      //  noStroke();
-      //  fill(c);
-      //} else {
-      //  noFill();
-      //  strokeWeight(map(maxLevel+1-myLevel, 1, maxLevel, 2, 8));
-      //  stroke(c);
-      //}
+      if (myLevel > 3) {
+        noStroke();
+        noFill();//fill(c);
+      } else {
+        noFill();
+        strokeWeight(map(maxLevel+1-myLevel, 1, maxLevel, 2, 8));
+        stroke(c);
+      }
       stroke(255);
       fill(0);
       float ns = s;

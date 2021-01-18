@@ -1,4 +1,7 @@
 import g4p_controls.*;
+
+
+
 public float speed = 1, scale = 1, osc1Speed, osc1Amp;
 public int filter = 1, thickness = 1;
 public boolean enableSymmetry = true;

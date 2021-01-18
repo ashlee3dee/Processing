@@ -1,5 +1,9 @@
 GUI Builder changes incorporated into 
 
+V4.4.1
+Fixes bug which prevented global font implementation code being produced in GUI tab
+
+
 V4.4
 Updated for G4P v4.3.1
 

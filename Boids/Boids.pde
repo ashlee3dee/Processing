@@ -41,12 +41,13 @@ PeasyCam cam;
 
 void settings()
 {
-  //size(800, 800, P3D);
-  fullScreen(P3D);
+  size(800, 800, P3D);
+  //fullScreen(P3D);
+  smooth(2);                      //enable highest level of anti-aliasing your system can handle
+  
 }
 void setup() {
   frameRate(30);                  //all code should be frame-rate independent. hint: use millis()
-  smooth(2);                      //enable highest level of anti-aliasing your system can handle
   ellipseMode(CENTER);
   rectMode(CENTER);
   textureMode(NORMAL);
@@ -113,7 +114,7 @@ void setup() {
       .setLabel("SPD")
       .setPosition(155, 5)
       .setSize(20, 85)
-      .setRange(0.01f, 10f)
+      .setRange(0.01f, 100f)
       .setColorActive(    color(255, 0, 0))
       .setColorBackground(color(0, 0, 0))
       .setColorForeground(color(192, 0, 0))

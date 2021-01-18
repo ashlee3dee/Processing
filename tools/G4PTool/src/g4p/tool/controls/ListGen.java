@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
 
-import g4p.tool.Log;
 import g4p.tool.TDataConstants;
 
 /**
@@ -63,7 +62,6 @@ public final class ListGen implements TDataConstants {
 
 	@SuppressWarnings("unchecked")
 	private void makeFontSelection(int type) {
-		Log.logger().info("Get a list of installed fonts");
 		GraphicsEnvironment ge = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		String[] s = ge.getAvailableFontFamilyNames();

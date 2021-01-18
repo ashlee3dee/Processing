@@ -184,7 +184,8 @@ public final class DApplication extends DBase {
 		global_display_font_changed = 
 				! ("Arial".equalsIgnoreCase(_0960_global_display_font) 
 				&& "Plain".equalsIgnoreCase(_0961_global_display_style)
-				&& 12 != _0962_global_display_size);
+				&& 12 == _0962_global_display_size);
+//		System.out.println("Display font changed : " + global_display_font_changed);
 //		Log.logger().info("Display font changed to: " + DBase.globalDisplayFont);
 	}
 	
@@ -193,7 +194,8 @@ public final class DApplication extends DBase {
 		global_input_font_changed = 
 				! ("Arial".equalsIgnoreCase(_0963_global_input_font) 
 				&& "Plain".equalsIgnoreCase(_0964_global_input_style)
-				&& 12 != _0965_global_input_size);
+				&& 12 == _0965_global_input_size);
+//		System.out.println("Input font changed : " + global_input_font_changed);
 //		Log.logger().info("Input font changed to: " + DBase.globalInputFont);
 	}
 	
@@ -202,7 +204,8 @@ public final class DApplication extends DBase {
 		global_slider_font_changed = 
 				! ("Arial".equalsIgnoreCase(_0966_global_slider_font) 
 				&& "Bold".equalsIgnoreCase(_0967_global_slider_style)
-				&& 11 != _0968_global_slider_size);
+				&& 11 == _0968_global_slider_size);
+//		System.out.println("Slider font changed : " + global_slider_font_changed);
 //		Log.logger().info("Slider font changed to: " + DBase.globalSliderFont);
 	}
 	
